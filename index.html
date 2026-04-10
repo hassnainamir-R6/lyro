@@ -152,6 +152,49 @@
             background-color: #2a2a2a;
         }
 
+        /* Customer Form Inputs */
+        .customer-form {
+            margin-bottom: 25px;
+            background-color: #181818;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .customer-form h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .customer-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .customer-form input, 
+        .customer-form textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--surface-color);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 15px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .customer-form input:focus, 
+        .customer-form textarea:focus {
+            outline: none;
+            border-color: var(--text-main);
+        }
+
         .buy-btn {
             width: 100%;
             background-color: var(--accent-color);
@@ -163,7 +206,6 @@
             font-weight: bold;
             cursor: pointer;
             transition: opacity 0.2s;
-            margin-top: 15px;
             margin-bottom: 30px;
             display: flex;
             justify-content: center;
@@ -239,11 +281,11 @@
         </div>
 
         <div class="product-info">
-            <h1>LYRO Desktop & Driving Companion</h1>
+            <h1>LYRO Driving Companion</h1>
             <div class="product-description">
                 The ultimate companion for your daily drive or your desktop workspace. Bring your setup to life with dynamic smartphone notifications, custom animations, and a unique aesthetic.
             </div>
-            <div class="price">Rs. 3,200 PKR</div>
+            <div class="price">Rs. 3,500 PKR</div>
             <div class="advance-notice">*Please note: A 200 PKR advance payment is required to confirm your order.</div>
 
             <div class="variant-details">
@@ -262,10 +304,22 @@
                 </div>
             </div>
 
-            <a id="whatsapp-order-btn" href="#" target="_blank" class="buy-btn">
+            <div class="customer-form">
+                <h3>Delivery Details</h3>
+                <label for="cust-name">Full Name</label>
+                <input type="text" id="cust-name" placeholder="Enter your full name" required>
+
+                <label for="cust-phone">Contact Number</label>
+                <input type="tel" id="cust-phone" placeholder="03XXXXXXXXX" required>
+
+                <label for="cust-address">Complete Delivery Address</label>
+                <textarea id="cust-address" rows="3" placeholder="House/Apartment #, Street, Block, City" required></textarea>
+            </div>
+
+            <button id="whatsapp-order-btn" class="buy-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-3.825 3.113-6.937 6.937-6.937 3.825 0 6.938 3.112 6.938 6.938 0 3.825-3.113 6.938-6.938 6.938z"/></svg>
                 Complete Order via WhatsApp
-            </a>
+            </button>
 
             <button class="accordion">Features</button>
             <div class="panel">
@@ -291,8 +345,8 @@
 
         // Map ONLY the models to their base images
         const modelImages = {
-            'Helmet Headphone': 'Helmet White.jpeg', // Base image for Helmet Headphone
-            'GTR liberty walk': 'black.jpg'            // Base image for GTR liberty walk
+            'Helmet Headphone': 'Helmet White.jpeg', 
+            'GTR liberty walk': 'black.jpg'            
         };
 
         const mainDisplayImage = document.getElementById("main-display-image");
@@ -324,21 +378,45 @@
             updateProductDisplay();
         }
 
-        // Updates the image, text confirmation, and WhatsApp link based on current selections
+        // Updates the image and text confirmation based on current selections
         function updateProductDisplay() {
-            // Update Image based ONLY on the selected model
             mainDisplayImage.src = modelImages[currentModel];
             mainDisplayImage.alt = "LYRO " + currentModel;
-
-            // Update Color Confirmation Text
             colorTextDisplay.innerText = "Selected Color: " + currentColor;
-
-            // Update WhatsApp Link
-            const phoneNumber = "923351146946";
-            const price = "Rs. 3,200 PKR";
-            const message = `Hello! I am interested in ordering the LYRO Driving Companion. I have selected the ${currentModel} model in ${currentColor}. Price is ${price}. Please let me know the next steps for payment.`;
-            whatsappOrderBtn.href = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
         }
+
+        // WhatsApp Checkout Logic with Form Validation
+        whatsappOrderBtn.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevents default link behavior
+            
+            // Grab the values typed in by the user
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+
+            // Check if any fields are empty
+            if (!name || !phone || !address) {
+                alert("Please fill in your Full Name, Contact Number, and Delivery Address before placing the order.");
+                return; // Stop the code here so it doesn't open WhatsApp
+            }
+
+            const phoneNumber = "923351146946";
+            const price = "Rs. 3,500 PKR";
+            
+            // Format the message with the typed details
+            const message = `Hello! I am ordering a LYRO.\n\n` +
+                            `🔹 *Model:* ${currentModel}\n` +
+                            `🔹 *Color:* ${currentColor}\n` +
+                            `🔹 *Price:* ${price}\n\n` +
+                            `📦 *Delivery Details:*\n` +
+                            `Name: ${name}\n` +
+                            `Phone: ${phone}\n` +
+                            `Address: ${address}\n\n` +
+                            `Please let me know the next steps for my 200 PKR advance payment!`;
+            
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        });
 
         // Accordion Animation Logic
         const acc = document.getElementsByClassName("accordion");
