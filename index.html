@@ -452,6 +452,7 @@
     };
 
     const WHATSAPP_NUMBER = "923351146946";
+    const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyd6H4Lr5zfW1QcFcNjkKlgr7WByXSvEvlxtayFiE4aFCOdF-sqDt31wjXLSfeoRuvQTA/exec";
 
     /* =====================================================================
        2. PRODUCT CATALOG DATA
@@ -623,6 +624,24 @@
       }
       errBanner.classList.add('hidden');
 
+      // 1. Send Order Data to Google Sheet in the background
+      const orderPayload = {
+        product: item.name,
+        color: item.isLyro ? selectedColor : "N/A",
+        price: item.price,
+        name: name,
+        phone: phone,
+        address: address
+      };
+
+      fetch(GOOGLE_SHEET_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(orderPayload)
+      }).catch(err => console.error("Sheet logging error:", err));
+
+      // 2. Build and Open WhatsApp Message
       let message = "";
       if (item.isLyro) {
         message = `Hello! I am ordering a LYRO.\n\n` +
