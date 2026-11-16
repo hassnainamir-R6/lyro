@@ -89,6 +89,15 @@
       50% { transform: scale(1.15); opacity: 0.7; }
     }
 
+    @keyframes modalPop {
+      0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-animate {
+      animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
     /* Pill Buttons */
     .pill-btn-solid {
       background: #F5F3EE;
@@ -339,7 +348,7 @@
         </div>
         <h3 class="font-serif text-3xl text-ivory mb-2">Delivery details</h3>
         <p class="text-xs text-white/55 mb-6">
-          Fill in your details below to send your order directly to our WhatsApp desk. 7-day checking warranty included.
+          Fill in your details below to log your reservation and open our WhatsApp desk. 7-day checking warranty included.
         </p>
 
         <div class="space-y-4 mb-6">
@@ -409,6 +418,73 @@
       WHATSAPP // +92 335 1146946
     </div>
   </footer>
+
+  <!-- ==========================================
+       ORDER CONFIRMATION SCREEN (POPUP MODAL)
+       ========================================== -->
+  <div id="order-confirm-modal" class="fixed inset-0 z-50 hidden bg-obsidian/90 backdrop-blur-xl items-center justify-center p-6">
+    <div class="modal-animate bg-surface border border-white/20 rounded-[24px] max-w-lg w-full p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+      <!-- Subtle top accent glow -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-40 h-[2px] bg-cyanGlow shadow-[0_0_20px_3px_#3FE1C6]"></div>
+
+      <!-- Status Header -->
+      <div class="flex items-center justify-between mb-5">
+        <div class="flex items-center gap-2.5">
+          <span class="w-6 h-6 rounded-full bg-cyanGlow/15 border border-cyanGlow/40 flex items-center justify-center text-cyanGlow text-xs">
+            &#10003;
+          </span>
+          <span class="font-mono text-[10px] tracking-[0.18em] uppercase text-cyanGlow">
+            RESERVATION LOGGED
+          </span>
+        </div>
+        <span id="confirm-ref-id" class="font-mono text-[10px] tracking-[0.14em] uppercase text-white/45">
+          REF // NK-0000
+        </span>
+      </div>
+
+      <h3 class="font-serif text-4xl text-ivory mb-2">We've got your order.</h3>
+      <p class="text-xs sm:text-sm text-white/65 leading-relaxed mb-6">
+        Your details have been saved to our studio log. Complete your <span class="text-amberGlow font-medium">200 PKR advance</span> on WhatsApp to lock in your unit for dispatch.
+      </p>
+
+      <!-- Logged Order Summary Box -->
+      <div class="bg-charcoal/90 border border-white/10 rounded-2xl p-4 mb-6 space-y-2.5 font-mono text-xs">
+        <div class="flex justify-between gap-4">
+          <span class="text-white/45 uppercase text-[10px] tracking-wider">EDITION</span>
+          <span id="confirm-product" class="text-ivory text-right font-medium">--</span>
+        </div>
+        <div id="confirm-color-row" class="flex justify-between gap-4">
+          <span class="text-white/45 uppercase text-[10px] tracking-wider">FINISH</span>
+          <span id="confirm-color" class="text-ivory text-right">--</span>
+        </div>
+        <div class="flex justify-between gap-4">
+          <span class="text-white/45 uppercase text-[10px] tracking-wider">RECIPIENT</span>
+          <span id="confirm-name" class="text-ivory text-right">--</span>
+        </div>
+        <div class="flex justify-between gap-4">
+          <span class="text-white/45 uppercase text-[10px] tracking-wider">CONTACT</span>
+          <span id="confirm-phone" class="text-ivory text-right">--</span>
+        </div>
+        <div class="flex justify-between gap-4 pt-2 border-t border-white/10">
+          <span class="text-white/45 uppercase text-[10px] tracking-wider">TOTAL (COD)</span>
+          <span class="text-amberGlow text-right">Rs. 4,500 PKR</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row gap-3">
+        <a id="confirm-whatsapp-reopen" href="#" target="_blank"
+           class="pill-btn-solid flex-1 py-3.5 px-5 text-xs font-semibold flex items-center justify-center gap-2 text-center">
+          <span>Open WhatsApp Chat</span>
+          <span>&rarr;</span>
+        </a>
+        <button onclick="closeConfirmModal()"
+                class="pill-btn-outline py-3.5 px-5 text-xs font-medium cursor-pointer">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- ==========================================
        SECRET LIVE STOCK MANAGER MODAL
@@ -641,7 +717,7 @@
         body: JSON.stringify(orderPayload)
       }).catch(err => console.error("Sheet logging error:", err));
 
-      // 2. Build and Open WhatsApp Message
+      // 2. Build WhatsApp URL
       let message = "";
       if (item.isLyro) {
         message = `Hello! I am ordering a LYRO.\n\n` +
@@ -663,7 +739,37 @@
           `Please let me know the next steps for my 200 PKR advance payment!`;
       }
 
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
+      const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+
+      // 3. Populate & Show Confirmation Screen on Website
+      const refCode = "NK-" + Math.floor(1000 + Math.random() * 9000);
+      document.getElementById('confirm-ref-id').textContent = `REF // ${refCode}`;
+      document.getElementById('confirm-product').textContent = item.name;
+      document.getElementById('confirm-name').textContent = name;
+      document.getElementById('confirm-phone').textContent = phone;
+
+      const colorRow = document.getElementById('confirm-color-row');
+      if (item.isLyro) {
+        colorRow.style.display = 'flex';
+        document.getElementById('confirm-color').textContent = selectedColor;
+      } else {
+        colorRow.style.display = 'none';
+      }
+
+      document.getElementById('confirm-whatsapp-reopen').href = whatsappUrl;
+
+      const confirmModal = document.getElementById('order-confirm-modal');
+      confirmModal.classList.remove('hidden');
+      confirmModal.classList.add('flex');
+
+      // 4. Open WhatsApp in new tab
+      window.open(whatsappUrl, '_blank');
+    }
+
+    function closeConfirmModal() {
+      const confirmModal = document.getElementById('order-confirm-modal');
+      confirmModal.classList.add('hidden');
+      confirmModal.classList.remove('flex');
     }
 
     /* =====================================================================
@@ -718,6 +824,14 @@
       document.getElementById('copy-confirm-msg').classList.remove('hidden');
       selectProduct(selectedProductId);
     }
+
+    // Close modals with Escape key
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeConfirmModal();
+        closeStockModal();
+      }
+    });
 
     // Initialize on load
     selectProduct('helmet');
