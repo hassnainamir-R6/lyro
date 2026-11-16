@@ -8,7 +8,7 @@
   <!-- Embedded Editorial Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23070709'/%3E%3Crect x='0.5' y='0.5' width='63' height='63' rx='15.5' stroke='%232A2836'/%3E%3Ctext x='16' y='46' fill='%23F5F3EE' font-family='Georgia, serif' font-size='42'%3EN%3C/text%3E%3Ccircle cx='49' cy='41' r='4.5' fill='%23FF6B2B'/%3E%3C/svg%3E">
 
-  <!-- Google Fonts: Instrument Serif (Editorial), JetBrains Mono (Technical HUD), Inter (UI) -->
+  <!-- Google Fonts: Instrument Serif, JetBrains Mono, Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -32,7 +32,6 @@
             amberGlow: '#FF944D',
             cyanGlow: '#3FE1C6',
             ivory: '#F5F3EE',
-            muted: '#8E8C99'
           }
         }
       }
@@ -42,20 +41,13 @@
   <style>
     :root {
       --bg: #060608;
-      --surface: rgba(19, 19, 25, 0.72);
-      --surface-raised: rgba(28, 28, 38, 0.85);
-      --border: rgba(255, 255, 255, 0.11);
-      --border-strong: rgba(255, 255, 255, 0.24);
       --text-main: #F5F3EE;
-      --text-muted: #8E8C99;
       --accent: #FF6B2B;
-      --accent-secondary: #3FE1C6;
     }
 
     * {
       box-sizing: border-box;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
     body {
@@ -64,7 +56,6 @@
       color: var(--text-main);
       font-family: 'Inter', sans-serif;
       overflow-x: hidden;
-      selection-background-color: #FF6B2B;
     }
 
     ::selection {
@@ -72,192 +63,72 @@
       color: #060608;
     }
 
-    /* Subtle Film Grain Overlay matching high-end hardware sites */
+    /* Subtle Film Grain Overlay */
     .noise-overlay {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 40;
-      opacity: 0.032;
+      opacity: 0.03;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     }
 
-    /* Ambient Studio Lighting Backdrop */
+    /* Ambient Studio Lighting */
     .studio-lighting {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 0;
-      transition: background 1s cubic-bezier(0.16, 1, 0.3, 1);
       background:
-        radial-gradient(circle 650px at 60% 42%, rgba(255, 115, 45, 0.15), transparent 70%),
-        radial-gradient(circle 500px at 52% 52%, rgba(63, 225, 198, 0.08), transparent 65%),
-        radial-gradient(ellipse 900px 450px at 18% 12%, rgba(255, 138, 76, 0.06), transparent 70%);
-    }
-
-    body[data-theme-mode="classic-red"] .studio-lighting {
-      background:
-        radial-gradient(circle 700px at 58% 44%, rgba(255, 82, 35, 0.22), transparent 70%),
-        radial-gradient(circle 480px at 52% 55%, rgba(255, 175, 95, 0.12), transparent 65%),
-        radial-gradient(ellipse 900px 450px at 18% 12%, rgba(255, 90, 50, 0.08), transparent 70%);
-    }
-
-    /* Choreographed Entry Animations */
-    @keyframes revealUp {
-      0% {
-        opacity: 0;
-        transform: translateY(28px);
-        filter: blur(8px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-        filter: blur(0);
-      }
+        radial-gradient(circle 650px at 65% 35%, rgba(255, 115, 45, 0.14), transparent 70%),
+        radial-gradient(circle 500px at 35% 55%, rgba(63, 225, 198, 0.07), transparent 65%);
     }
 
     @keyframes pulseDot {
-      0%, 100% {
-        transform: scale(1);
-        opacity: 1;
-        box-shadow: 0 0 0 0 rgba(255, 107, 43, 0.7);
-      }
-      50% {
-        transform: scale(1.12);
-        opacity: 0.85;
-        box-shadow: 0 0 14px 4px rgba(255, 107, 43, 0.35);
-      }
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.15); opacity: 0.7; }
     }
 
-    @keyframes floatSlow {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-8px); }
-    }
-
-    @keyframes scrollLine {
-      0% { transform: scaleY(0); transform-origin: top; }
-      50% { transform: scaleY(1); transform-origin: top; }
-      51% { transform: scaleY(1); transform-origin: bottom; }
-      100% { transform: scaleY(0); transform-origin: bottom; }
-    }
-
-    .anim-reveal-1 { animation: revealUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.08s forwards; opacity: 0; }
-    .anim-reveal-2 { animation: revealUp 0.95s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; opacity: 0; }
-    .anim-reveal-3 { animation: revealUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.32s forwards; opacity: 0; }
-    .anim-reveal-4 { animation: revealUp 1.05s cubic-bezier(0.16, 1, 0.3, 1) 0.44s forwards; opacity: 0; }
-
-    /* Scroll Observer Reveal */
-    .reveal-on-scroll {
-      opacity: 0;
-      transform: translateY(26px);
-      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .reveal-on-scroll.is-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Navigation Link Underline (Glide Reference Style) */
-    .nav-item {
-      position: relative;
-      padding-bottom: 6px;
-      color: rgba(245, 243, 238, 0.6);
-      transition: color 0.25s ease;
-    }
-    .nav-item:hover,
-    .nav-item.active {
-      color: #F5F3EE;
-    }
-    .nav-item::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: 1.5px;
-      background: #F5F3EE;
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .nav-item.active::after,
-    .nav-item:hover::after {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-
-    /* Hero 3D Interactive Stage */
-    .hero-stage-wrapper {
-      perspective: 1400px;
-    }
-    .hero-stage-card {
-      transform-style: preserve-3d;
-      transition: transform 0.25s ease-out, box-shadow 0.45s ease;
-      box-shadow:
-        0 30px 90px -20px rgba(0, 0, 0, 0.92),
-        0 0 60px -15px var(--stage-glow, rgba(255, 115, 45, 0.22));
-    }
-    .hero-stage-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      padding: 1px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.26), rgba(255,255,255,0.03) 45%, rgba(255, 115, 45, 0.3));
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-    }
-
-    /* Smooth Image Morphing */
-    .morph-image {
-      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), filter 0.45s ease;
-    }
-    .morph-image.switching {
-      opacity: 0;
-      transform: scale(0.96);
-      filter: blur(6px);
-    }
-
-    /* Glide-Style Pill Buttons */
+    /* Pill Buttons */
     .pill-btn-solid {
       background: #F5F3EE;
       color: #070709;
       border-radius: 9999px;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.25s ease;
     }
-    .pill-btn-solid:hover {
+    .pill-btn-solid:hover:not(:disabled) {
       background: #FFFFFF;
       transform: translateY(-2px);
-      box-shadow: 0 12px 30px -8px rgba(245, 243, 238, 0.35);
+      box-shadow: 0 12px 28px -8px rgba(245, 243, 238, 0.35);
+    }
+    .pill-btn-solid:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
     }
 
     .pill-btn-outline {
       background: rgba(255, 255, 255, 0.03);
       color: #F5F3EE;
-      border: 1px solid rgba(255, 255, 255, 0.24);
+      border: 1px solid rgba(255, 255, 255, 0.22);
       border-radius: 9999px;
-      backdrop-filter: blur(12px);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.25s ease;
     }
     .pill-btn-outline:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.55);
-      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.5);
     }
 
-    /* Custom Variant Cards */
-    .variant-card {
+    /* Selectable Product & Option Cards */
+    .select-card {
       background: rgba(19, 19, 25, 0.65);
       border: 1px solid rgba(255, 255, 255, 0.12);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.25s ease;
     }
-    .variant-card:hover {
-      border-color: rgba(255, 255, 255, 0.32);
+    .select-card:hover {
+      border-color: rgba(255, 255, 255, 0.3);
       background: rgba(28, 28, 38, 0.8);
     }
-    .variant-card.selected {
+    .select-card.active {
       border-color: #F5F3EE;
       background: rgba(245, 243, 238, 0.08);
       box-shadow: 0 0 25px -5px rgba(255, 115, 45, 0.25);
@@ -265,394 +136,113 @@
 
     /* Studio Inputs */
     .studio-input {
-      background: rgba(10, 10, 14, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(10, 10, 14, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       color: #F5F3EE;
-      transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
     .studio-input:focus {
       outline: none;
       border-color: rgba(245, 243, 238, 0.55);
-      background: rgba(16, 16, 22, 0.95);
-      box-shadow: 0 0 0 3px rgba(255, 107, 43, 0.12);
+      box-shadow: 0 0 0 3px rgba(255, 107, 43, 0.15);
     }
     .studio-input.input-error {
       border-color: #FF4D4D;
-      box-shadow: 0 0 0 3px rgba(255, 77, 77, 0.18);
-    }
-
-    /* Accordion smooth transition */
-    .accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #060608;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #262530;
-      border-radius: 3px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #FF6B2B;
     }
   </style>
 </head>
-<body data-theme-mode="lyro" class="relative min-h-screen selection:bg-ember selection:text-black">
+<body class="relative min-h-screen">
 
-  <!-- Film Grain & Dynamic Ambient Studio Rim Lighting -->
   <div class="noise-overlay"></div>
-  <div class="studio-lighting" id="ambient-backdrop"></div>
+  <div class="studio-lighting"></div>
 
   <!-- ==========================================
-       TOP EDITORIAL HEADER (Glide Style)
+       SIMPLE TOP HEADER
        ========================================== -->
-  <header class="fixed top-0 left-0 right-0 z-30 border-b border-white/[0.07] bg-obsidian/70 backdrop-blur-xl">
-    <div class="max-w-[1360px] mx-auto px-6 md:px-12 h-20 flex items-center justify-between">
+  <header class="fixed top-0 left-0 right-0 z-30 border-b border-white/[0.07] bg-obsidian/75 backdrop-blur-xl">
+    <div class="max-w-[1240px] mx-auto px-6 h-20 flex items-center justify-between">
       
-      <!-- Brand Wordmark in Editorial Serif -->
-      <a href="#hero" class="group flex items-baseline gap-2.5 focus:outline-none">
-        <span class="font-serif text-3xl md:text-[34px] tracking-tight text-ivory transition-transform duration-300 group-hover:scale-[1.02]">
-          Nook
-        </span>
+      <!-- Brand Wordmark -->
+      <div class="flex items-baseline gap-2.5">
+        <a href="#top" class="font-serif text-3xl tracking-tight text-ivory">Nook</a>
         <span class="w-2 h-2 rounded-full bg-ember inline-block" style="animation: pulseDot 2.8s infinite;"></span>
-        <span class="hidden sm:inline-block font-mono text-[10px] tracking-[0.22em] uppercase text-white/40 ml-2">
+        <!-- Secret trigger: click 5 times to open live stock editor -->
+        <span id="studio-secret-trigger" title="Studio Edition" class="hidden sm:inline-block font-mono text-[10px] tracking-[0.22em] uppercase text-white/40 ml-2 cursor-pointer select-none">
           LAHORE // STUDIO
         </span>
-      </a>
-
-      <!-- Center Monospace Uppercase Navigation -->
-      <nav class="hidden md:flex items-center gap-9 font-mono text-[11px] tracking-[0.18em] uppercase">
-        <button onclick="switchProduct('lyro', true)" id="nav-lyro" class="nav-item active cursor-pointer bg-transparent border-0">
-          LYRO COMPANION
-        </button>
-        <button onclick="switchProduct('classic-red', true)" id="nav-classic-red" class="nav-item cursor-pointer bg-transparent border-0">
-          CLASSIC RED LAMP
-        </button>
-        <a href="#engineering" class="nav-item">
-          CRAFT &amp; SPECS
-        </a>
-        <a href="#studio-checkout" class="nav-item">
-          CONFIGURE
-        </a>
-      </nav>
-
-      <!-- Right Pill Reserve CTA -->
-      <div class="flex items-center gap-3">
-        <a href="#studio-checkout" class="pill-btn-outline px-5 py-2.5 text-xs md:text-[13px] font-medium flex items-center gap-2.5 group">
-          <span>Reserve</span>
-          <span class="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
-        </a>
       </div>
 
+      <!-- Simple Navigation -->
+      <nav class="hidden md:flex items-center gap-8 font-mono text-[11px] tracking-[0.18em] uppercase text-white/65">
+        <a href="#lineup" class="hover:text-ivory transition-colors">LINEUP &amp; STOCK</a>
+        <a href="#order" class="hover:text-ivory transition-colors">ORDER NOW</a>
+      </nav>
+
+      <!-- Direct CTA -->
+      <a href="#order" class="pill-btn-outline px-5 py-2.5 text-xs font-medium flex items-center gap-2">
+        <span>Reserve</span>
+        <span>&rarr;</span>
+      </a>
     </div>
   </header>
 
   <!-- ==========================================
-       FULL-VIEWPORT EDITORIAL HERO SECTION
-       (Direct homage to Glide Reference Image)
+       CLEAN EDITORIAL HERO
        ========================================== -->
-  <section id="hero" class="relative z-10 min-h-screen pt-28 pb-14 px-6 md:px-12 max-w-[1360px] mx-auto flex flex-col justify-between">
-    
-    <!-- Main 12-Column Editorial Stage -->
-    <div class="my-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center py-6 lg:py-10">
+  <section id="top" class="relative z-10 pt-32 pb-16 px-6 max-w-[1240px] mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
       
-      <!-- LEFT COLUMN: Editorial Headline & Dual Pill CTAs -->
-      <div class="lg:col-span-5 flex flex-col items-start z-20">
-        
-        <!-- Monospace Eyebrow -->
-        <div class="anim-reveal-1 flex items-center gap-3 mb-4">
+      <!-- Left Copy -->
+      <div class="lg:col-span-6">
+        <div class="flex items-center gap-2.5 mb-4">
           <span class="w-2 h-2 rounded-full bg-ember"></span>
-          <span id="hero-eyebrow" class="font-mono text-[11px] md:text-xs tracking-[0.2em] uppercase text-white/80">
-            NOOK LYRO // SERIES 01
+          <span class="font-mono text-[11px] tracking-[0.2em] uppercase text-white/75">
+            NOOK HARDWARE // SERIES 01
           </span>
         </div>
 
-        <!-- Giant Editorial Serif Display Headline -->
-        <h1 id="hero-headline" class="anim-reveal-2 font-serif text-[58px] sm:text-[74px] xl:text-[88px] leading-[0.95] tracking-[-0.02em] text-ivory mb-6">
-          Built for<br><span class="italic font-normal text-white/95">what’s next.</span>
+        <h1 class="font-serif text-[54px] sm:text-[72px] leading-[0.96] tracking-[-0.02em] text-ivory mb-6">
+          Built for<br><span class="italic font-normal text-white/95">your desk corner.</span>
         </h1>
 
-        <!-- Monospace Uppercase Subtitle -->
-        <p id="hero-subcopy" class="anim-reveal-3 font-mono text-[11px] sm:text-xs tracking-[0.16em] uppercase text-white/60 leading-relaxed max-w-md mb-8">
-          SMART DESK &amp; CAR DASHBOARD COMPANION.<br>
-          CUSTOM OLED EXPRESSIONS // MADE IN LAHORE.
+        <p class="font-mono text-xs tracking-[0.15em] uppercase text-white/60 leading-relaxed max-w-md mb-8">
+          EXPRESSIVE OLED COMPANIONS &amp; AMBIENT LIGHTING.<br>
+          LIMITED BATCHES // HANDCRAFTED IN LAHORE.
         </p>
 
-        <!-- Dual Pill Buttons (Exact match to Glide UI) -->
-        <div class="anim-reveal-4 flex flex-wrap items-center gap-3.5">
-          <a href="#studio-checkout" class="pill-btn-solid px-6 py-3.5 text-xs sm:text-[13px] font-medium flex items-center gap-2.5 group">
-            <span id="hero-primary-cta">Reserve LYRO</span>
-            <span class="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+        <div class="flex flex-wrap items-center gap-3.5">
+          <a href="#order" class="pill-btn-solid px-6 py-3.5 text-xs sm:text-[13px] font-medium flex items-center gap-2">
+            <span>Reserve Your Unit</span>
+            <span>&rarr;</span>
           </a>
-
-          <button onclick="cycleHeroShowcase()" class="pill-btn-outline px-5 py-3.5 text-xs sm:text-[13px] font-medium flex items-center gap-2.5 group cursor-pointer">
-            <span>Switch Edition</span>
-            <span class="w-4 h-4 rounded-full border border-white/30 flex items-center justify-center text-[10px] transition-transform duration-500 group-hover:rotate-180">
-              &#8635;
-            </span>
-          </button>
+          <a href="#lineup" class="pill-btn-outline px-5 py-3.5 text-xs sm:text-[13px] font-medium">
+            View Lineup
+          </a>
         </div>
-
-        <!-- Quick Product Switcher Pills in Hero -->
-        <div class="anim-reveal-4 mt-9 pt-6 border-t border-white/10 w-full max-w-md">
-          <div class="font-mono text-[10px] tracking-[0.18em] uppercase text-white/40 mb-3">
-            SELECT HARDWARE EDITION //
-          </div>
-          <div class="grid grid-cols-3 gap-2.5">
-            <button onclick="selectHeroEdition('helmet')" id="hero-pill-helmet" class="text-left px-3.5 py-2.5 rounded-xl border border-white/30 bg-white/[0.07] transition-all">
-              <div class="font-mono text-[9px] tracking-[0.14em] uppercase text-ember">LYRO 01</div>
-              <div class="text-xs font-medium text-ivory truncate mt-0.5">Helmet White</div>
-            </button>
-            <button onclick="selectHeroEdition('gtr')" id="hero-pill-gtr" class="text-left px-3.5 py-2.5 rounded-xl border border-white/10 bg-white/[0.02] hover:border-white/25 transition-all">
-              <div class="font-mono text-[9px] tracking-[0.14em] uppercase text-cyanGlow">LYRO 02</div>
-              <div class="text-xs font-medium text-white/80 truncate mt-0.5">GTR Liberty</div>
-            </button>
-            <button onclick="selectHeroEdition('lamp')" id="hero-pill-lamp" class="text-left px-3.5 py-2.5 rounded-xl border border-white/10 bg-white/[0.02] hover:border-white/25 transition-all">
-              <div class="font-mono text-[9px] tracking-[0.14em] uppercase text-amberGlow">LAMP 01</div>
-              <div class="text-xs font-medium text-white/80 truncate mt-0.5">Classic Red</div>
-            </button>
-          </div>
-        </div>
-
       </div>
 
-      <!-- CENTER COLUMN: Interactive 3D Product Showcase Stage -->
-      <div class="lg:col-span-5 hero-stage-wrapper relative flex items-center justify-center z-10">
-        
-        <!-- Warm Rim-Light Halo Behind Product -->
-        <div id="hero-halo" class="absolute w-[82%] h-[82%] rounded-full blur-[70px] opacity-50 pointer-events-none transition-all duration-700"
-             style="background: radial-gradient(circle, rgba(255,115,45,0.42) 0%, rgba(63,225,198,0.18) 60%, transparent 80%);"></div>
-
-        <!-- Interactive 3D Tilt Showcase Frame -->
-        <div id="hero-tilt-card" class="hero-stage-card relative w-full max-w-[500px] aspect-[4/4.1] rounded-[26px] bg-charcoal overflow-hidden group cursor-pointer"
-             onclick="openLightbox()">
-          
-          <!-- Actual Uploaded Product Image -->
-          <img id="hero-stage-image"
+      <!-- Right Hero Visual -->
+      <div class="lg:col-span-6 relative">
+        <div class="relative aspect-[4/3] rounded-[24px] bg-charcoal border border-white/15 overflow-hidden shadow-2xl">
+          <img id="hero-preview-img"
                src="image_fabd93.jpg"
                onerror="this.onerror=null; this.src='Helmet White.jpeg';"
-               alt="Nook LYRO Helmet Headphone Smart Companion"
-               class="morph-image w-full h-full object-cover object-center select-none group-hover:scale-[1.03] transition-transform duration-700">
-
-          <!-- Subtle Cinematic Vignette & Warm Bottom Reflection -->
-          <div class="absolute inset-0 bg-gradient-to-t from-obsidian/90 via-transparent to-obsidian/30 pointer-events-none"></div>
+               alt="Nook LYRO Smart Companion"
+               class="w-full h-full object-cover transition-all duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-obsidian/85 via-transparent to-transparent"></div>
           
-          <!-- Glowing Bottom Rim Indicator (like the orange mouse LED in Glide) -->
-          <div id="hero-led-strip" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-28 h-[3px] rounded-full bg-ember shadow-[0_0_20px_4px_#FF6B2B] transition-all duration-500"></div>
-
-          <!-- Top-Left Live Hardware Tag inside Frame -->
-          <div class="absolute top-4 left-4 px-3 py-1.5 rounded-full bg-obsidian/70 backdrop-blur-md border border-white/15 flex items-center gap-2">
-            <span id="stage-live-dot" class="w-1.5 h-1.5 rounded-full bg-cyanGlow animate-pulse"></span>
-            <span id="stage-badge-text" class="font-mono text-[10px] tracking-[0.16em] uppercase text-ivory/90">
-              LYRO // HELMET HEADPHONE
-            </span>
-          </div>
-
-          <!-- Bottom Bar Inside Stage Card -->
-          <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between pointer-events-none">
+          <div class="absolute bottom-5 left-5 right-5 flex items-end justify-between">
             <div>
-              <div id="stage-caption-sub" class="font-mono text-[10px] tracking-[0.16em] uppercase text-white/50">
-                EDITION // WHITE &amp; BLACK
+              <div id="hero-preview-tag" class="font-mono text-[10px] tracking-[0.18em] uppercase text-cyanGlow">
+                LYRO // HELMET HEADPHONE
               </div>
-              <div id="stage-caption-price" class="font-serif text-2xl text-ivory">
-                Rs. 4,500 <span class="font-mono text-[10px] text-ember uppercase tracking-widest ml-1">· 200 PKR Advance</span>
+              <div class="font-serif text-2xl text-ivory mt-0.5">
+                Rs. 4,500 <span class="font-mono text-[10px] text-ember uppercase tracking-widest ml-1">&middot; 200 PKR Advance</span>
               </div>
             </div>
-            <div class="px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 font-mono text-[10px] tracking-[0.14em] uppercase text-ivory">
-              Inspect +
+            <div id="hero-stock-pill" class="px-3 py-1.5 rounded-full bg-obsidian/80 backdrop-blur-md border border-white/15 font-mono text-[10px] tracking-[0.14em] uppercase text-ivory">
+              -- LEFT
             </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- RIGHT COLUMN: Floating Technical Telemetry Callouts (Exact Glide Right-Side Layout) -->
-      <div class="lg:col-span-2 flex lg:flex-col justify-between lg:justify-center gap-6 lg:gap-7 lg:pl-6 border-t lg:border-t-0 border-white/10 pt-6 lg:pt-0 z-20">
-        
-        <div class="group">
-          <div class="w-7 h-[1px] bg-white/25 mb-3 transition-all duration-300 group-hover:w-12 group-hover:bg-ember"></div>
-          <div id="spec-label-1" class="font-mono text-[10px] tracking-[0.18em] uppercase text-white/50">
-            DISPLAY CORE
-          </div>
-          <div id="spec-val-1" class="font-mono text-xs sm:text-[13px] tracking-[0.12em] uppercase text-ivory mt-1 font-medium">
-            OLED EXPRESSIVE
-          </div>
-        </div>
-
-        <div class="group">
-          <div class="w-7 h-[1px] bg-white/25 mb-3 transition-all duration-300 group-hover:w-12 group-hover:bg-ember"></div>
-          <div id="spec-label-2" class="font-mono text-[10px] tracking-[0.18em] uppercase text-white/50">
-            DUAL ENVIRONMENT
-          </div>
-          <div id="spec-val-2" class="font-mono text-xs sm:text-[13px] tracking-[0.12em] uppercase text-ivory mt-1 font-medium">
-            DESK &amp; DASHBOARD
-          </div>
-        </div>
-
-        <div class="group">
-          <div class="w-7 h-[1px] bg-white/25 mb-3 transition-all duration-300 group-hover:w-12 group-hover:bg-ember"></div>
-          <div id="spec-label-3" class="font-mono text-[10px] tracking-[0.18em] uppercase text-white/50">
-            RESERVATION
-          </div>
-          <div id="spec-val-3" class="font-mono text-xs sm:text-[13px] tracking-[0.12em] uppercase text-ember mt-1 font-medium">
-            RS. 4,500 PKR
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- BOTTOM HUD BAR (Exact Bottom-Left Scroll Node & Bottom-Right Circular VIEW Button from Glide) -->
-    <div class="pt-4 flex items-center justify-between border-t border-white/[0.06]">
-      
-      <!-- Bottom Left: Scroll To Explore Indicator -->
-      <a href="#studio-checkout" class="flex items-center gap-3.5 group text-white/60 hover:text-ivory transition-colors">
-        <div class="relative flex items-center justify-center w-5 h-9">
-          <div class="w-[1px] h-full bg-white/20"></div>
-          <div class="w-2.5 h-2.5 rounded-full border border-white/60 bg-obsidian absolute group-hover:border-ember group-hover:scale-125 transition-all"></div>
-        </div>
-        <span class="font-mono text-[10px] tracking-[0.2em] uppercase">
-          SCROLL TO CONFIGURE
-        </span>
-      </a>
-
-      <!-- Center Tiny Tagline -->
-      <div class="hidden sm:block font-mono text-[10px] tracking-[0.18em] uppercase text-white/35">
-        IDEAS. TOOLS. COMPANIONS. // LAHORE, PK
-      </div>
-
-      <!-- Bottom Right: Circular Dot Button + VIEW (Exact Glide Reference Element) -->
-      <button onclick="openLightbox()" class="flex items-center gap-3.5 group cursor-pointer bg-transparent border-0 text-ivory">
-        <div class="w-11 h-11 rounded-full border border-white/25 flex items-center justify-center transition-all duration-300 group-hover:border-ivory group-hover:scale-105 bg-white/[0.02]">
-          <span class="w-2 h-2 rounded-full bg-ivory group-hover:bg-ember transition-colors"></span>
-        </div>
-        <span class="font-mono text-[11px] tracking-[0.2em] uppercase">
-          VIEW
-        </span>
-        <span class="w-7 h-[1px] bg-white/25 group-hover:w-11 group-hover:bg-ivory transition-all"></span>
-      </button>
-
-    </div>
-
-  </section>
-
-  <!-- ==========================================
-       ENGINEERING & EDITORIAL GALLERY STRIP
-       (Showcasing all 3 actual product photos)
-       ========================================== -->
-  <section id="engineering" class="relative z-10 py-20 px-6 md:px-12 max-w-[1360px] mx-auto border-t border-white/10">
-    
-    <div class="reveal-on-scroll flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-      <div>
-        <div class="font-mono text-[11px] tracking-[0.2em] uppercase text-ember mb-2">
-          01 // THE HARDWARE LINEUP
-        </div>
-        <h2 class="font-serif text-4xl sm:text-5xl text-ivory tracking-tight">
-          Three icons for your desk corner.
-        </h2>
-      </div>
-      <p class="font-mono text-[11px] tracking-[0.14em] uppercase text-white/55 max-w-sm leading-relaxed">
-        CLICK ANY EDITION BELOW TO LOAD IT DIRECTLY INTO THE CONFIGURATION STUDIO.
-      </p>
-    </div>
-
-    <!-- 3-Card Showcase Grid using the exact uploaded images -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      
-      <!-- Card 1: LYRO Helmet Headphone -->
-      <div onclick="jumpToConfigure('lyro', 'Helmet Headphone', 'White')"
-           class="reveal-on-scroll group cursor-pointer rounded-2xl bg-surface/80 border border-white/10 hover:border-white/35 overflow-hidden transition-all duration-500 flex flex-col">
-        <div class="relative aspect-[4/3] overflow-hidden bg-charcoal">
-          <img src="image_fabd93.jpg"
-               onerror="this.onerror=null; this.src='Helmet White.jpeg';"
-               alt="LYRO Helmet Headphone"
-               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-          <div class="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-transparent to-transparent"></div>
-          <span class="absolute top-3.5 left-3.5 px-2.5 py-1 rounded-full bg-obsidian/75 backdrop-blur-md border border-white/15 font-mono text-[10px] tracking-[0.15em] uppercase text-cyanGlow">
-            LYRO // 01
-          </span>
-        </div>
-        <div class="p-6 flex-1 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-1.5">
-              <h3 class="font-serif text-2xl text-ivory">LYRO Helmet Headphone</h3>
-              <span class="font-mono text-xs text-white/70">Rs. 4,500</span>
-            </div>
-            <p class="text-xs text-white/55 leading-relaxed">
-              Sculpted visor helmet shell with detachable black over-ear headphones and animated OLED eyes.
-            </p>
-          </div>
-          <div class="mt-5 pt-4 border-t border-white/10 flex items-center justify-between font-mono text-[10px] tracking-[0.16em] uppercase text-ivory group-hover:text-ember transition-colors">
-            <span>CONFIGURE EDITION</span>
-            <span>&rarr;</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 2: LYRO GTR Liberty Walk -->
-      <div onclick="jumpToConfigure('lyro', 'GTR liberty walk', 'Black')"
-           class="reveal-on-scroll group cursor-pointer rounded-2xl bg-surface/80 border border-white/10 hover:border-white/35 overflow-hidden transition-all duration-500 flex flex-col">
-        <div class="relative aspect-[4/3] overflow-hidden bg-charcoal">
-          <img src="image_fac03c.jpg"
-               onerror="this.onerror=null; this.src='black.jpg';"
-               alt="LYRO GTR Liberty Walk"
-               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-          <div class="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-transparent to-transparent"></div>
-          <span class="absolute top-3.5 left-3.5 px-2.5 py-1 rounded-full bg-obsidian/75 backdrop-blur-md border border-white/15 font-mono text-[10px] tracking-[0.15em] uppercase text-cyanGlow">
-            LYRO // 02
-          </span>
-        </div>
-        <div class="p-6 flex-1 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-1.5">
-              <h3 class="font-serif text-2xl text-ivory">LYRO GTR Liberty Walk</h3>
-              <span class="font-mono text-xs text-white/70">Rs. 4,500</span>
-            </div>
-            <p class="text-xs text-white/55 leading-relaxed">
-              Aero widebody silhouette complete with rear GT wing, aggressive front splitter, and cyan OLED matrix.
-            </p>
-          </div>
-          <div class="mt-5 pt-4 border-t border-white/10 flex items-center justify-between font-mono text-[10px] tracking-[0.16em] uppercase text-ivory group-hover:text-ember transition-colors">
-            <span>CONFIGURE EDITION</span>
-            <span>&rarr;</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card 3: Classic Red Glow Lamp -->
-      <div onclick="jumpToConfigure('classic-red')"
-           class="reveal-on-scroll group cursor-pointer rounded-2xl bg-surface/80 border border-white/10 hover:border-white/35 overflow-hidden transition-all duration-500 flex flex-col">
-        <div class="relative aspect-[4/3] overflow-hidden bg-charcoal">
-          <img src="image_fabd91.jpg"
-               onerror="this.onerror=null; this.src='lamp.jpeg';"
-               alt="Classic Red Glow Lamp"
-               class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700">
-          <div class="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-transparent to-transparent"></div>
-          <span class="absolute top-3.5 left-3.5 px-2.5 py-1 rounded-full bg-obsidian/75 backdrop-blur-md border border-white/15 font-mono text-[10px] tracking-[0.15em] uppercase text-ember">
-            AMBIENT // 01
-          </span>
-        </div>
-        <div class="p-6 flex-1 flex flex-col justify-between">
-          <div>
-            <div class="flex items-center justify-between mb-1.5">
-              <h3 class="font-serif text-2xl text-ivory">Classic Red Glow Lamp</h3>
-              <span class="font-mono text-xs text-white/70">Rs. 4,500</span>
-            </div>
-            <p class="text-xs text-white/55 leading-relaxed">
-              Iconic tall cylinder desk lamp with a bold red cap and 360&deg; warm-white diffusion. Direct USB-A power.
-            </p>
-          </div>
-          <div class="mt-5 pt-4 border-t border-white/10 flex items-center justify-between font-mono text-[10px] tracking-[0.16em] uppercase text-ivory group-hover:text-ember transition-colors">
-            <span>CONFIGURE EDITION</span>
-            <span>&rarr;</span>
           </div>
         </div>
       </div>
@@ -661,886 +251,457 @@
   </section>
 
   <!-- ==========================================
-       CONFIGURATION STUDIO & WHATSAPP CHECKOUT
-       (Preserves all original logic, IDs, variants & WhatsApp checkout)
+       UNIFIED PRODUCT SELECTION & CHECKOUT
        ========================================== -->
-  <section id="studio-checkout" class="relative z-10 py-20 px-6 md:px-12 max-w-[1360px] mx-auto border-t border-white/10">
+  <section id="lineup" class="relative z-10 py-14 px-6 max-w-[1240px] mx-auto border-t border-white/10">
     
-    <!-- Section Header + Product Tabs -->
-    <div class="reveal-on-scroll flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 border-b border-white/10 pb-6">
+    <!-- Section Title -->
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
       <div>
-        <div class="font-mono text-[11px] tracking-[0.2em] uppercase text-ember mb-2">
-          02 // RESERVATION STUDIO
+        <div class="font-mono text-[11px] tracking-[0.2em] uppercase text-ember mb-1.5">
+          01 // SELECT EDITION
         </div>
-        <h2 class="font-serif text-4xl sm:text-5xl text-ivory tracking-tight">
-          Configure your companion.
-        </h2>
+        <h2 class="font-serif text-4xl text-ivory">Choose your Nook.</h2>
       </div>
+      <div class="font-mono text-[11px] tracking-[0.14em] uppercase text-white/50">
+        ALL MODELS RS. 4,500 PKR &middot; NATIONWIDE COD
+      </div>
+    </div>
 
-      <!-- Product Switcher Tabs -->
-      <div class="flex items-center gap-3 bg-surface/90 p-1.5 rounded-full border border-white/15">
-        <button class="tab-btn active px-5 py-2.5 rounded-full font-mono text-[11px] tracking-[0.16em] uppercase transition-all cursor-pointer bg-ivory text-obsidian font-medium"
-                data-product="lyro"
-                onclick="switchProduct('lyro', false)">
-          LYRO Companion
-        </button>
-        <button class="tab-btn px-5 py-2.5 rounded-full font-mono text-[11px] tracking-[0.16em] uppercase transition-all cursor-pointer text-white/65 hover:text-ivory"
-                data-product="classic-red"
-                onclick="switchProduct('classic-red', false)">
-          Classic Red Lamp
-        </button>
-      </div>
+    <!-- 3 Product Cards (Live Stock Badges Automatically Populated) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14" id="product-cards-grid">
+      <!-- Cards are rendered cleanly via JS from PRODUCT_CATALOG -->
     </div>
 
     <!-- ==========================================
-         PANEL 1: LYRO SMART COMPANION
+         SIMPLE ORDER & CONFIGURATION BOX
          ========================================== -->
-    <div id="panel-lyro" class="product-panel grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    <div id="order" class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start pt-6 border-t border-white/10">
       
-      <!-- Left: Sticky Product Gallery -->
-      <div class="lg:col-span-6 lg:sticky lg:top-28 flex flex-col gap-4">
-        
-        <div class="relative aspect-square rounded-[24px] bg-charcoal border border-white/15 overflow-hidden flex items-center justify-center group">
-          <!-- Ambient Cyan/Warm Glow -->
-          <div class="absolute w-3/4 h-1/2 -bottom-10 rounded-full blur-[65px] opacity-40 pointer-events-none bg-cyanGlow"></div>
-          
-          <img id="main-display-image"
+      <!-- Left: Selected Item Summary -->
+      <div class="lg:col-span-5 bg-surface/80 border border-white/12 rounded-[22px] p-6">
+        <div class="flex items-center justify-between mb-4">
+          <span class="font-mono text-[10px] tracking-[0.18em] uppercase text-white/50">SELECTED CONFIGURATION</span>
+          <span id="summary-stock-badge" class="px-2.5 py-1 rounded-full font-mono text-[10px] tracking-[0.14em] uppercase bg-cyanGlow/15 text-cyanGlow border border-cyanGlow/30">
+            IN STOCK
+          </span>
+        </div>
+
+        <div class="aspect-[4/3] rounded-xl overflow-hidden bg-charcoal border border-white/10 mb-5">
+          <img id="checkout-img"
                src="image_fabd93.jpg"
                onerror="this.onerror=null; this.src='Helmet White.jpeg';"
-               alt="LYRO Helmet Headphone"
-               class="morph-image w-full h-full object-cover relative z-10">
-
-          <!-- Overlay Top Pill -->
-          <div class="absolute top-4 left-4 z-20 px-3.5 py-1.5 rounded-full bg-obsidian/75 backdrop-blur-md border border-white/15 font-mono text-[10px] tracking-[0.16em] uppercase text-cyanGlow">
-            LIVE PREVIEW // LYRO
-          </div>
-
-          <!-- Fullscreen Zoom Trigger -->
-          <button onclick="openLightbox()" class="absolute bottom-4 right-4 z-20 px-3.5 py-2 rounded-full bg-obsidian/80 backdrop-blur-md border border-white/20 hover:border-ivory font-mono text-[10px] tracking-[0.16em] uppercase text-ivory flex items-center gap-2 cursor-pointer">
-            <span>EXPAND</span>
-            <span>&#8599;</span>
-          </button>
+               alt="Selected Nook Product"
+               class="w-full h-full object-cover">
         </div>
 
-        <!-- Thumbnail Strip for Quick Inspection -->
-        <div class="grid grid-cols-2 gap-3">
-          <button onclick="selectModel('Helmet Headphone')" id="thumb-helmet"
-                  class="flex items-center gap-3 p-2.5 rounded-xl border border-white/30 bg-white/[0.06] text-left transition-all cursor-pointer">
-            <img src="image_fabd93.jpg" onerror="this.onerror=null; this.src='Helmet White.jpeg';" alt="Helmet Headphone" class="w-14 h-14 rounded-lg object-cover">
-            <div>
-              <div class="font-mono text-[10px] tracking-[0.15em] uppercase text-cyanGlow">MODEL 01</div>
-              <div class="text-xs font-medium text-ivory mt-0.5">Helmet Headphone</div>
-            </div>
-          </button>
-          <button onclick="selectModel('GTR liberty walk')" id="thumb-gtr"
-                  class="flex items-center gap-3 p-2.5 rounded-xl border border-white/10 bg-white/[0.02] hover:border-white/25 text-left transition-all cursor-pointer">
-            <img src="image_fac03c.jpg" onerror="this.onerror=null; this.src='black.jpg';" alt="GTR Liberty Walk" class="w-14 h-14 rounded-lg object-cover">
-            <div>
-              <div class="font-mono text-[10px] tracking-[0.15em] uppercase text-white/50">MODEL 02</div>
-              <div class="text-xs font-medium text-ivory mt-0.5">GTR Liberty Walk</div>
-            </div>
-          </button>
-        </div>
-
-        <!-- Selected Color Status Bar -->
-        <div class="flex items-center justify-between px-5 py-3.5 rounded-xl bg-surface/90 border border-white/10 font-mono text-xs">
-          <div id="color-text-display" class="text-white/70">
-            Selected colour: <b class="text-ivory font-medium">White</b>
-          </div>
-          <div class="flex items-center gap-2 text-[10px] tracking-[0.16em] uppercase text-cyanGlow">
-            <span class="w-1.5 h-1.5 rounded-full bg-cyanGlow animate-pulse"></span>
-            READY TO SHIP
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Right: Configuration & Delivery Checkout -->
-      <div class="lg:col-span-6 flex flex-col">
-        
-        <div class="font-mono text-[11px] tracking-[0.2em] uppercase text-cyanGlow mb-2">
-          DESKTOP &amp; CAR COMPANION
-        </div>
-        <h1 class="font-serif text-4xl sm:text-5xl text-ivory tracking-tight mb-4">
-          LYRO Smart Companion
-        </h1>
-        <p class="text-white/65 text-sm sm:text-[15px] leading-relaxed mb-6">
-          A living display for your desk that follows you into the car. Custom screen animations, live notifications, and a personality that's entirely yours.
+        <h3 id="checkout-title" class="font-serif text-3xl text-ivory">LYRO Helmet Headphone</h3>
+        <p id="checkout-desc" class="text-xs text-white/60 leading-relaxed mt-1.5 mb-5">
+          Sculpted visor helmet shell with detachable black over-ear headphones and animated OLED eyes.
         </p>
 
-        <!-- Price & Advance Notice Box -->
-        <div class="p-5 rounded-2xl bg-surface/80 border border-white/12 mb-7 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <div class="font-mono text-[10px] tracking-[0.18em] uppercase text-white/45">DIRECT STUDIO PRICE</div>
-            <div class="font-serif text-4xl text-ivory mt-0.5">Rs. 4,500</div>
-          </div>
-          <div class="px-3.5 py-2 rounded-xl bg-ember/15 border border-ember/30 font-mono text-[11px] tracking-[0.1em] text-amberGlow">
-            200 PKR advance confirms order &middot; Balance on COD
-          </div>
-        </div>
-
-        <!-- Variant: Model -->
-        <div class="mb-6">
-          <label class="block font-mono text-[11px] tracking-[0.18em] uppercase text-white/55 mb-3">
-            01 // SELECT MODEL
-          </label>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div class="variant-card selected p-4 rounded-xl cursor-pointer flex items-center justify-between"
-                 onclick="selectModel('Helmet Headphone')"
-                 id="model-Helmet-Headphone">
-              <div>
-                <div class="text-sm font-medium text-ivory">Helmet Headphone</div>
-                <div class="font-mono text-[10px] tracking-[0.14em] uppercase text-white/45 mt-0.5">Visor + Over-Ear Pods</div>
-              </div>
-              <span class="w-2.5 h-2.5 rounded-full bg-ember"></span>
-            </div>
-
-            <div class="variant-card p-4 rounded-xl cursor-pointer flex items-center justify-between"
-                 onclick="selectModel('GTR liberty walk')"
-                 id="model-GTR-liberty-walk">
-              <div>
-                <div class="text-sm font-medium text-ivory">GTR Liberty Walk</div>
-                <div class="font-mono text-[10px] tracking-[0.14em] uppercase text-white/45 mt-0.5">Widebody + GT Wing</div>
-              </div>
-              <span class="w-2.5 h-2.5 rounded-full bg-white/20"></span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Variant: Colour -->
-        <div class="mb-7">
-          <label class="block font-mono text-[11px] tracking-[0.18em] uppercase text-white/55 mb-3">
-            02 // SELECT FINISH COLOUR
+        <!-- Colour Option (Only shown for LYRO models) -->
+        <div id="color-selector-wrapper" class="mb-5 pt-4 border-t border-white/10">
+          <label class="block font-mono text-[10px] tracking-[0.18em] uppercase text-white/55 mb-2.5">
+            FINISH COLOUR
           </label>
           <div class="grid grid-cols-2 gap-3">
-            <div class="variant-card selected p-3.5 rounded-xl cursor-pointer flex items-center gap-3"
-                 onclick="selectColor('White')"
-                 id="color-White">
-              <span class="w-5 h-5 rounded-full bg-[#F3F1EC] border border-white/30 shadow-inner"></span>
-              <span class="text-sm font-medium text-ivory">White</span>
-            </div>
-
-            <div class="variant-card p-3.5 rounded-xl cursor-pointer flex items-center gap-3"
-                 onclick="selectColor('Black')"
-                 id="color-Black">
-              <span class="w-5 h-5 rounded-full bg-[#18181F] border border-white/40 shadow-inner"></span>
-              <span class="text-sm font-medium text-ivory">Black</span>
-            </div>
+            <button type="button" onclick="setColor('White')" id="btn-color-White"
+                    class="select-card active py-2.5 px-3.5 rounded-xl flex items-center gap-2.5 cursor-pointer text-left">
+              <span class="w-4 h-4 rounded-full bg-[#F3F1EC] border border-white/30"></span>
+              <span class="text-xs font-medium text-ivory">White</span>
+            </button>
+            <button type="button" onclick="setColor('Black')" id="btn-color-Black"
+                    class="select-card py-2.5 px-3.5 rounded-xl flex items-center gap-2.5 cursor-pointer text-left">
+              <span class="w-4 h-4 rounded-full bg-[#18181F] border border-white/40"></span>
+              <span class="text-xs font-medium text-ivory">Black</span>
+            </button>
           </div>
         </div>
 
-        <!-- Customer Delivery Form -->
-        <div class="p-6 rounded-2xl bg-surface/90 border border-white/12 mb-6">
-          <div class="flex items-center justify-between mb-5">
-            <h3 class="font-serif text-2xl text-ivory">Delivery details</h3>
-            <span class="font-mono text-[10px] tracking-[0.16em] uppercase text-white/45">PAKISTAN NATIONWIDE</span>
+        <!-- Price Breakdown -->
+        <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+          <div>
+            <div class="font-mono text-[10px] tracking-[0.16em] uppercase text-white/45">TOTAL PRICE</div>
+            <div class="font-serif text-3xl text-ivory">Rs. 4,500</div>
           </div>
-
-          <div class="space-y-4">
-            <div>
-              <label for="cust-name-lyro" class="block font-mono text-[10px] tracking-[0.16em] uppercase text-white/60 mb-2">
-                Full name *
-              </label>
-              <input type="text" id="cust-name-lyro" placeholder="Enter your full name"
-                     class="studio-input w-full px-4 py-3 rounded-xl text-sm">
-            </div>
-
-            <div>
-              <label for="cust-phone-lyro" class="block font-mono text-[10px] tracking-[0.16em] uppercase text-white/60 mb-2">
-                Contact number (WhatsApp) *
-              </label>
-              <input type="tel" id="cust-phone-lyro" placeholder="03XXXXXXXXX"
-                     class="studio-input w-full px-4 py-3 rounded-xl text-sm font-mono">
-            </div>
-
-            <div>
-              <label for="cust-address-lyro" class="block font-mono text-[10px] tracking-[0.16em] uppercase text-white/60 mb-2">
-                Complete delivery address *
-              </label>
-              <textarea id="cust-address-lyro" rows="3" placeholder="House/Apartment #, Street, Block, City"
-                        class="studio-input w-full px-4 py-3 rounded-xl text-sm"></textarea>
-            </div>
-          </div>
-
-          <!-- Inline Validation Feedback Banner -->
-          <div id="validation-msg-lyro" class="hidden mt-4 p-3 rounded-xl bg-red-500/15 border border-red-500/40 text-xs text-red-200 font-mono">
-            Please fill in your full name, contact number, and delivery address to reserve via WhatsApp.
+          <div class="text-right font-mono text-[10px] tracking-[0.12em] uppercase text-amberGlow">
+            200 PKR ADVANCE<br>
+            <span class="text-white/45">RS. 4,300 ON DELIVERY</span>
           </div>
         </div>
-
-        <!-- WhatsApp Order CTA Button -->
-        <button onclick="orderViaWhatsApp('lyro')"
-                class="pill-btn-solid w-full py-4 px-6 text-sm font-semibold flex items-center justify-center gap-3 cursor-pointer mb-8 group">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-3.825 3.113-6.937 6.937-6.937 3.825 0 6.938 3.112 6.938 6.938 0 3.825-3.113 6.938-6.938 6.938z"/>
-          </svg>
-          <span>Complete Order via WhatsApp</span>
-          <span class="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
-        </button>
-
-        <!-- Expandable Accordions -->
-        <div class="border-t border-white/12">
-          <button class="w-full py-4 flex items-center justify-between text-left font-mono text-xs tracking-[0.16em] uppercase text-ivory bg-transparent border-0 border-b border-white/12 cursor-pointer"
-                  onclick="toggleAccordion(this)">
-            <span>FEATURES &amp; TELEMETRY</span>
-            <span class="plus text-lg font-light text-white/60 transition-transform duration-300">+</span>
-          </button>
-          <div class="accordion-content border-b border-white/12">
-            <p class="py-4 text-sm text-white/60 leading-relaxed m-0">
-              Brings your desktop to life with custom screen animations and instant smartphone notifications, then rides along on your car dashboard when it's time to drive.
-            </p>
-          </div>
-
-          <button class="w-full py-4 flex items-center justify-between text-left font-mono text-xs tracking-[0.16em] uppercase text-ivory bg-transparent border-0 border-b border-white/12 cursor-pointer"
-                  onclick="toggleAccordion(this)">
-            <span>SHIPPING &amp; DELIVERY</span>
-            <span class="plus text-lg font-light text-white/60 transition-transform duration-300">+</span>
-          </button>
-          <div class="accordion-content border-b border-white/12">
-            <p class="py-4 text-sm text-white/60 leading-relaxed m-0">
-              We deliver across Pakistan. Shipping charges depend on your location and are confirmed during WhatsApp checkout.
-            </p>
-          </div>
-
-          <button class="w-full py-4 flex items-center justify-between text-left font-mono text-xs tracking-[0.16em] uppercase text-ivory bg-transparent border-0 border-b border-white/12 cursor-pointer"
-                  onclick="toggleAccordion(this)">
-            <span>WARRANTY &amp; RETURNS</span>
-            <span class="plus text-lg font-light text-white/60 transition-transform duration-300">+</span>
-          </button>
-          <div class="accordion-content border-b border-white/12">
-            <p class="py-4 text-sm text-white/60 leading-relaxed m-0">
-              7-day checking warranty against manufacturing defects or transit damage. Message us right away if anything looks off on unboxing.
-            </p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ==========================================
-         PANEL 2: CLASSIC RED GLOW LAMP
-         ========================================== -->
-    <div id="panel-classic-red" class="product-panel hidden grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-      
-      <!-- Left: Sticky Lamp Gallery -->
-      <div class="lg:col-span-6 lg:sticky lg:top-28 flex flex-col gap-4">
-        
-        <div class="relative aspect-square rounded-[24px] bg-charcoal border border-white/15 overflow-hidden flex items-center justify-center group">
-          <!-- Ambient Warm Amber Glow -->
-          <div class="absolute w-3/4 h-1/2 -bottom-10 rounded-full blur-[65px] opacity-55 pointer-events-none bg-ember"></div>
-          
-          <img id="lamp-display-image"
-               src="image_fabd91.jpg"
-               onerror="this.onerror=null; this.src='lamp.jpeg';"
-               alt="Classic Red desk lamp glowing on a desk"
-               class="w-full h-full object-cover relative z-10 transition-all duration-500">
-
-          <!-- Overlay Top Pill -->
-          <div class="absolute top-4 left-4 z-20 px-3.5 py-1.5 rounded-full bg-obsidian/75 backdrop-blur-md border border-white/15 font-mono text-[10px] tracking-[0.16em] uppercase text-ember">
-            AMBIENT DIFFUSION // 360&deg;
-          </div>
-
-          <!-- Fullscreen Zoom Trigger -->
-          <button onclick="openLightbox()" class="absolute bottom-4 right-4 z-20 px-3.5 py-2 rounded-full bg-obsidian/80 backdrop-blur-md border border-white/20 hover:border-ivory font-mono text-[10px] tracking-[0.16em] uppercase text-ivory flex items-center gap-2 cursor-pointer">
-            <span>EXPAND</span>
-            <span>&#8599;</span>
-          </button>
-        </div>
-
-        <!-- Interactive Ambient Glow Preview Toggle -->
-        <div class="flex items-center justify-between px-5 py-3.5 rounded-xl bg-surface/90 border border-white/10 font-mono text-xs">
-          <span class="text-white/75">Ambient warm-white glow &middot; USB powered</span>
-          <span class="text-[10px] tracking-[0.16em] uppercase text-ember">IN STOCK</span>
-        </div>
-
       </div>
 
-      <!-- Right: Classic Red Lamp Info & Form -->
-      <div class="lg:col-span-6 flex flex-col">
-        
-        <div class="font-mono text-[11px] tracking-[0.2em] uppercase text-ember mb-2">
-          AMBIENT DESK LIGHTING
+      <!-- Right: Delivery Form & WhatsApp Checkout -->
+      <div class="lg:col-span-7 bg-surface/80 border border-white/12 rounded-[22px] p-6 sm:p-8">
+        <div class="font-mono text-[11px] tracking-[0.2em] uppercase text-ember mb-1.5">
+          02 // INSTANT RESERVATION
         </div>
-        <h1 class="font-serif text-4xl sm:text-5xl text-ivory tracking-tight mb-4">
-          Classic Red Glow Lamp
-        </h1>
-        <p class="text-white/65 text-sm sm:text-[15px] leading-relaxed mb-6">
-          A tall cylinder lamp with a bold red cap and a soft, even glow that fills your desk with warm light. Plugs straight into any USB port — no batteries, no fuss.
+        <h3 class="font-serif text-3xl text-ivory mb-2">Delivery details</h3>
+        <p class="text-xs text-white/55 mb-6">
+          Fill in your details below to send your order directly to our WhatsApp desk. 7-day checking warranty included.
         </p>
 
-        <!-- Price & Advance Notice Box -->
-        <div class="p-5 rounded-2xl bg-surface/80 border border-white/12 mb-7 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <div class="font-mono text-[10px] tracking-[0.18em] uppercase text-white/45">DIRECT STUDIO PRICE</div>
-            <div class="font-serif text-4xl text-ivory mt-0.5">Rs. 4,500</div>
-          </div>
-          <div class="px-3.5 py-2 rounded-xl bg-ember/15 border border-ember/30 font-mono text-[11px] tracking-[0.1em] text-amberGlow">
-            200 PKR advance confirms order &middot; Balance on COD
-          </div>
-        </div>
-
-        <!-- Power Spec -->
-        <div class="mb-7">
-          <label class="block font-mono text-[11px] tracking-[0.18em] uppercase text-white/55 mb-3">
-            POWER CONFIGURATION
-          </label>
-          <div class="variant-card selected p-4 rounded-xl flex items-center justify-between">
+        <div class="space-y-4 mb-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <div class="text-sm font-medium text-ivory">USB-A cable included</div>
-              <div class="font-mono text-[10px] tracking-[0.14em] uppercase text-white/45 mt-0.5">Plug &amp; Play 5V Desk Illumination</div>
-            </div>
-            <span class="w-2.5 h-2.5 rounded-full bg-ember"></span>
-          </div>
-        </div>
-
-        <!-- Customer Delivery Form -->
-        <div class="p-6 rounded-2xl bg-surface/90 border border-white/12 mb-6">
-          <div class="flex items-center justify-between mb-5">
-            <h3 class="font-serif text-2xl text-ivory">Delivery details</h3>
-            <span class="font-mono text-[10px] tracking-[0.16em] uppercase text-white/45">PAKISTAN NATIONWIDE</span>
-          </div>
-
-          <div class="space-y-4">
-            <div>
-              <label for="cust-name-cr" class="block font-mono text-[10px] tracking-[0.16em] uppercase text-white/60 mb-2">
-                Full name *
+              <label for="cust-name" class="block font-mono text-[10px] tracking-[0.16em] uppercase text-white/60 mb-2">
+                Full Name *
               </label>
-              <input type="text" id="cust-name-cr" placeholder="Enter your full name"
+              <input type="text" id="cust-name" placeholder="Your full name"
                      class="studio-input w-full px-4 py-3 rounded-xl text-sm">
             </div>
 
             <div>
-              <label for="cust-phone-cr" class="block font-mono text-[10px] tracking-[0.16em] uppercase text-white/60 mb-2">
-                Contact number (WhatsApp) *
+              <label for="cust-phone" class="block font-mono text-[10px] tracking-[0.16em] uppercase text-white/60 mb-2">
+                WhatsApp Number *
               </label>
-              <input type="tel" id="cust-phone-cr" placeholder="03XXXXXXXXX"
+              <input type="tel" id="cust-phone" placeholder="03XXXXXXXXX"
                      class="studio-input w-full px-4 py-3 rounded-xl text-sm font-mono">
-            </div>
-
-            <div>
-              <label for="cust-address-cr" class="block font-mono text-[10px] tracking-[0.16em] uppercase text-white/60 mb-2">
-                Complete delivery address *
-              </label>
-              <textarea id="cust-address-cr" rows="3" placeholder="House/Apartment #, Street, Block, City"
-                        class="studio-input w-full px-4 py-3 rounded-xl text-sm"></textarea>
             </div>
           </div>
 
-          <!-- Inline Validation Feedback Banner -->
-          <div id="validation-msg-cr" class="hidden mt-4 p-3 rounded-xl bg-red-500/15 border border-red-500/40 text-xs text-red-200 font-mono">
-            Please fill in your full name, contact number, and delivery address to reserve via WhatsApp.
+          <div>
+            <label for="cust-address" class="block font-mono text-[10px] tracking-[0.16em] uppercase text-white/60 mb-2">
+              Complete Delivery Address *
+            </label>
+            <textarea id="cust-address" rows="3" placeholder="House/Apartment #, Street, Block, City"
+                      class="studio-input w-full px-4 py-3 rounded-xl text-sm"></textarea>
           </div>
         </div>
 
-        <!-- WhatsApp Order CTA Button -->
-        <button onclick="orderViaWhatsApp('classic-red')"
-                class="pill-btn-solid w-full py-4 px-6 text-sm font-semibold flex items-center justify-center gap-3 cursor-pointer mb-8 group">
+        <!-- Inline Error Message -->
+        <div id="validation-msg" class="hidden mb-4 p-3 rounded-xl bg-red-500/15 border border-red-500/40 text-xs text-red-200 font-mono">
+          Please enter your name, WhatsApp number, and complete delivery address.
+        </div>
+
+        <!-- WhatsApp Order CTA -->
+        <button id="whatsapp-order-btn" onclick="submitWhatsAppOrder()"
+                class="pill-btn-solid w-full py-4 px-6 text-sm font-semibold flex items-center justify-center gap-3 cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-3.825 3.113-6.937 6.937-6.937 3.825 0 6.938 3.112 6.938 6.938 0 3.825-3.113 6.938-6.938 6.938z"/>
           </svg>
-          <span>Complete Order via WhatsApp</span>
-          <span class="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+          <span id="order-btn-label">Complete Order via WhatsApp</span>
         </button>
 
-        <!-- Expandable Accordions -->
-        <div class="border-t border-white/12">
-          <button class="w-full py-4 flex items-center justify-between text-left font-mono text-xs tracking-[0.16em] uppercase text-ivory bg-transparent border-0 border-b border-white/12 cursor-pointer"
-                  onclick="toggleAccordion(this)">
-            <span>FEATURES &amp; DIFFUSION</span>
-            <span class="plus text-lg font-light text-white/60 transition-transform duration-300">+</span>
-          </button>
-          <div class="accordion-content border-b border-white/12">
-            <p class="py-4 text-sm text-white/60 leading-relaxed m-0">
-              Even, soft ambient light with a 360&deg; diffuser. Sits neatly on any desk or nightstand and looks equally good on or off.
-            </p>
-          </div>
-
-          <button class="w-full py-4 flex items-center justify-between text-left font-mono text-xs tracking-[0.16em] uppercase text-ivory bg-transparent border-0 border-b border-white/12 cursor-pointer"
-                  onclick="toggleAccordion(this)">
-            <span>SHIPPING &amp; DELIVERY</span>
-            <span class="plus text-lg font-light text-white/60 transition-transform duration-300">+</span>
-          </button>
-          <div class="accordion-content border-b border-white/12">
-            <p class="py-4 text-sm text-white/60 leading-relaxed m-0">
-              We deliver across Pakistan. Shipping charges depend on your location and are confirmed during WhatsApp checkout.
-            </p>
-          </div>
-
-          <button class="w-full py-4 flex items-center justify-between text-left font-mono text-xs tracking-[0.16em] uppercase text-ivory bg-transparent border-0 border-b border-white/12 cursor-pointer"
-                  onclick="toggleAccordion(this)">
-            <span>WARRANTY &amp; RETURNS</span>
-            <span class="plus text-lg font-light text-white/60 transition-transform duration-300">+</span>
-          </button>
-          <div class="accordion-content border-b border-white/12">
-            <p class="py-4 text-sm text-white/60 leading-relaxed m-0">
-              7-day checking warranty against manufacturing defects or transit damage. Message us right away if anything looks off on unboxing.
-            </p>
-          </div>
+        <div class="mt-5 pt-4 border-t border-white/10 flex flex-wrap justify-between gap-2 font-mono text-[10px] tracking-[0.14em] uppercase text-white/45">
+          <span>&bull; 200 PKR ADVANCE CONFIRMS</span>
+          <span>&bull; 7-DAY CHECKING WARRANTY</span>
+          <span>&bull; PAKISTAN SHIPPING</span>
         </div>
-
       </div>
-    </div>
 
+    </div>
   </section>
 
   <!-- ==========================================
-       EDITORIAL FOOTER
+       MINIMAL FOOTER
        ========================================== -->
-  <footer class="relative z-10 border-t border-white/10 py-12 px-6 md:px-12 max-w-[1360px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
-    <div class="flex items-baseline gap-2.5">
+  <footer class="relative z-10 border-t border-white/10 py-10 px-6 max-w-[1240px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="flex items-baseline gap-2">
       <span class="font-serif text-2xl text-ivory">Nook</span>
       <span class="w-1.5 h-1.5 rounded-full bg-ember"></span>
       <span class="font-mono text-[10px] tracking-[0.18em] uppercase text-white/45 ml-2">
         Small things for your desk corner, made in Lahore
       </span>
     </div>
-    <div class="font-mono text-[10px] tracking-[0.18em] uppercase text-white/40">
-      WHATSAPP DIRECT // +92 335 1146946
+    <div class="font-mono text-[10px] tracking-[0.18em] uppercase text-white/45">
+      WHATSAPP // +92 335 1146946
     </div>
   </footer>
 
   <!-- ==========================================
-       FULLSCREEN GALLERY LIGHTBOX MODAL (Triggered by "VIEW")
+       SECRET LIVE STOCK MANAGER MODAL
+       (Click "LAHORE // STUDIO" 5 times to open)
        ========================================== -->
-  <div id="lightbox-modal" class="fixed inset-0 z-50 hidden bg-obsidian/95 backdrop-blur-2xl flex-col justify-between p-6 md:p-12">
-    <div class="flex items-center justify-between border-b border-white/10 pb-4">
-      <div class="flex items-center gap-3">
-        <span class="w-2 h-2 rounded-full bg-ember"></span>
-        <span id="lightbox-title" class="font-mono text-xs tracking-[0.2em] uppercase text-ivory">
-          NOOK STUDIO INSPECTION // HIGH RESOLUTION
-        </span>
+  <div id="stock-admin-modal" class="fixed inset-0 z-50 hidden bg-obsidian/90 backdrop-blur-xl items-center justify-center p-6">
+    <div class="bg-surface border border-white/20 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
+        <span class="font-mono text-xs tracking-[0.18em] uppercase text-ember">LIVE STOCK MANAGER</span>
+        <button onclick="closeStockModal()" class="font-mono text-xs text-white/60 hover:text-ivory cursor-pointer">CLOSE [X]</button>
       </div>
-      <button onclick="closeLightbox()" class="pill-btn-outline px-4 py-2 font-mono text-[11px] tracking-[0.16em] uppercase cursor-pointer">
-        CLOSE [ESC]
-      </button>
-    </div>
-
-    <div class="my-auto flex items-center justify-center py-6 max-h-[72vh]">
-      <img id="lightbox-img"
-           src="image_fabd93.jpg"
-           onerror="this.onerror=null; this.src='Helmet White.jpeg';"
-           alt="Product High Resolution View"
-           class="max-h-[68vh] w-auto max-w-full rounded-2xl border border-white/15 object-contain shadow-2xl">
-    </div>
-
-    <div class="flex flex-wrap items-center justify-center gap-3 border-t border-white/10 pt-4">
-      <button onclick="setLightboxImage('image_fabd93.jpg', 'Helmet White.jpeg', 'LYRO // HELMET HEADPHONE (WHITE)')"
-              class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 font-mono text-[10px] tracking-[0.16em] uppercase text-ivory cursor-pointer">
-        01. LYRO Helmet Headphone
-      </button>
-      <button onclick="setLightboxImage('image_fac03c.jpg', 'black.jpg', 'LYRO // GTR LIBERTY WALK (BLACK)')"
-              class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 font-mono text-[10px] tracking-[0.16em] uppercase text-ivory cursor-pointer">
-        02. LYRO GTR Liberty Walk
-      </button>
-      <button onclick="setLightboxImage('image_fabd91.jpg', 'lamp.jpeg', 'CLASSIC RED GLOW LAMP // USB AMBIENT')"
-              class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 font-mono text-[10px] tracking-[0.16em] uppercase text-ivory cursor-pointer">
-        03. Classic Red Glow Lamp
-      </button>
+      <p class="text-xs text-white/60 mb-4 leading-relaxed">
+        Adjust stock counts below to preview live availability. To make changes permanent on your live website, update the <code class="text-cyanGlow">STOCK_CONFIG</code> numbers at the top of the HTML file.
+      </p>
+      <div id="stock-admin-inputs" class="space-y-3 mb-5"></div>
+      <div class="flex gap-3">
+        <button onclick="applyAdminStock()" class="pill-btn-solid flex-1 py-2.5 text-xs font-semibold cursor-pointer">
+          Apply Preview
+        </button>
+        <button onclick="copyStockSnippet()" class="pill-btn-outline flex-1 py-2.5 text-xs font-medium cursor-pointer">
+          Copy Code Snippet
+        </button>
+      </div>
+      <div id="copy-confirm-msg" class="hidden mt-3 text-center font-mono text-[10px] uppercase tracking-widest text-cyanGlow">
+        Copied! Paste into STOCK_CONFIG in your HTML file.
+      </div>
     </div>
   </div>
 
   <!-- ==========================================
-       APPLICATION LOGIC & INTERACTIVE ANIMATIONS
+       EASY INVENTORY CONFIG & APPLICATION LOGIC
        ========================================== -->
   <script>
-    const WHATSAPP_NUMBER = "923351146946";
-
-    // Primary uploaded product image mapping + local fallback filenames
-    const modelImages = {
-      'Helmet Headphone': {
-        primary: 'image_fabd93.jpg',
-        fallback: 'Helmet White.jpeg'
-      },
-      'GTR liberty walk': {
-        primary: 'image_fac03c.jpg',
-        fallback: 'black.jpg'
-      },
-      'Classic Red Lamp': {
-        primary: 'image_fabd91.jpg',
-        fallback: 'lamp.jpeg'
-      }
+    /* =====================================================================
+       1. EDIT YOUR STOCK NUMBERS HERE (Set to 0 to mark an item SOLD OUT)
+       ===================================================================== */
+    const STOCK_CONFIG = {
+      helmet: 4,       // LYRO Helmet Headphone stock left
+      gtr: 2,          // LYRO GTR Liberty Walk stock left
+      lamp: 5          // Classic Red Glow Lamp stock left
     };
 
-    let currentProduct = 'lyro';
-    let currentModel = 'Helmet Headphone';
-    let currentColor = 'White';
-    let heroEditionIndex = 0;
-    const heroEditions = ['helmet', 'gtr', 'lamp'];
+    const WHATSAPP_NUMBER = "923351146946";
 
-    // DOM References
-    const mainDisplayImage = document.getElementById("main-display-image");
-    const colorTextDisplay = document.getElementById("color-text-display");
-    const heroStageImage = document.getElementById("hero-stage-image");
+    /* =====================================================================
+       2. PRODUCT CATALOG DATA
+       ===================================================================== */
+    const PRODUCT_CATALOG = [
+      {
+        id: 'helmet',
+        tag: 'LYRO // 01',
+        name: 'LYRO Helmet Headphone',
+        modelName: 'Helmet Headphone',
+        isLyro: true,
+        price: 'Rs. 4,500',
+        primaryImg: 'image_fabd93.jpg',
+        fallbackImg: 'Helmet White.jpeg',
+        desc: 'Sculpted visor helmet shell with detachable black over-ear headphones and animated OLED eyes.'
+      },
+      {
+        id: 'gtr',
+        tag: 'LYRO // 02',
+        name: 'LYRO GTR Liberty Walk',
+        modelName: 'GTR liberty walk',
+        isLyro: true,
+        price: 'Rs. 4,500',
+        primaryImg: 'image_fac03c.jpg',
+        fallbackImg: 'black.jpg',
+        desc: 'Aero widebody silhouette complete with rear GT wing, aggressive front splitter, and cyan OLED matrix.'
+      },
+      {
+        id: 'lamp',
+        tag: 'AMBIENT // 01',
+        name: 'Classic Red Glow Lamp',
+        modelName: 'Classic Red Glow Lamp',
+        isLyro: false,
+        price: 'Rs. 4,500',
+        primaryImg: 'image_fabd91.jpg',
+        fallbackImg: 'lamp.jpeg',
+        desc: 'Iconic tall cylinder desk lamp with a bold red cap and 360° warm-white diffusion. Direct USB-A power.'
+      }
+    ];
 
-    // Helper to safely set image with fallback support
-    function applyImageWithFallback(imgElement, primarySrc, fallbackSrc, altText) {
-      imgElement.classList.add('switching');
-      setTimeout(() => {
-        imgElement.onerror = function() {
-          this.onerror = null;
-          this.src = fallbackSrc;
-        };
-        imgElement.src = primarySrc;
-        if (altText) imgElement.alt = altText;
-        imgElement.onload = () => {
-          imgElement.classList.remove('switching');
-        };
-        setTimeout(() => imgElement.classList.remove('switching'), 120);
-      }, 180);
+    let selectedProductId = 'helmet';
+    let selectedColor = 'White';
+
+    /* =====================================================================
+       3. RENDER & UPDATE FUNCTIONS
+       ===================================================================== */
+    function renderProductCards() {
+      const grid = document.getElementById('product-cards-grid');
+      grid.innerHTML = PRODUCT_CATALOG.map(item => {
+        const stock = STOCK_CONFIG[item.id] ?? 0;
+        const isOut = stock <= 0;
+        const isActive = item.id === selectedProductId;
+
+        const badgeClass = isOut
+          ? 'bg-red-500/20 text-red-300 border-red-500/40'
+          : (stock <= 2 ? 'bg-ember/20 text-amberGlow border-ember/40' : 'bg-cyanGlow/15 text-cyanGlow border-cyanGlow/30');
+
+        const badgeText = isOut ? 'SOLD OUT' : `${stock} LEFT IN STOCK`;
+
+        return `
+          <div onclick="selectProduct('${item.id}')"
+               class="select-card ${isActive ? 'active' : ''} rounded-2xl overflow-hidden cursor-pointer flex flex-col">
+            <div class="relative aspect-[4/3] bg-charcoal overflow-hidden">
+              <img src="${item.primaryImg}"
+                   onerror="this.onerror=null; this.src='${item.fallbackImg}';"
+                   alt="${item.name}"
+                   class="w-full h-full object-cover ${isOut ? 'grayscale opacity-60' : ''}">
+              <div class="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-transparent to-transparent"></div>
+              <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-obsidian/80 backdrop-blur-md border border-white/15 font-mono text-[10px] tracking-[0.15em] uppercase text-ivory">
+                ${item.tag}
+              </span>
+              <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full backdrop-blur-md border font-mono text-[10px] tracking-[0.12em] uppercase ${badgeClass}">
+                ${badgeText}
+              </span>
+            </div>
+            <div class="p-5 flex-1 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-1">
+                  <h3 class="font-serif text-2xl text-ivory">${item.name}</h3>
+                  <span class="font-mono text-xs text-white/75">${item.price}</span>
+                </div>
+                <p class="text-xs text-white/55 leading-relaxed">${item.desc}</p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between font-mono text-[10px] tracking-[0.16em] uppercase ${isActive ? 'text-ember' : 'text-white/60'}">
+                <span>${isActive ? 'SELECTED FOR ORDER' : 'CLICK TO SELECT'}</span>
+                <span>&rarr;</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
-    // ---- Hero Showcase Switcher ----
-    function selectHeroEdition(edition) {
-      // Update Hero Mini Pills
-      ['helmet', 'gtr', 'lamp'].forEach(key => {
-        const pill = document.getElementById('hero-pill-' + key);
-        if (key === edition) {
-          pill.className = "text-left px-3.5 py-2.5 rounded-xl border border-white/40 bg-white/[0.09] transition-all";
-        } else {
-          pill.className = "text-left px-3.5 py-2.5 rounded-xl border border-white/10 bg-white/[0.02] hover:border-white/25 transition-all";
-        }
+    function selectProduct(productId) {
+      selectedProductId = productId;
+      const item = PRODUCT_CATALOG.find(p => p.id === productId);
+      if (!item) return;
+
+      const stock = STOCK_CONFIG[item.id] ?? 0;
+      const isOut = stock <= 0;
+
+      // Update Hero Preview
+      const heroImg = document.getElementById('hero-preview-img');
+      heroImg.onerror = function() { this.onerror = null; this.src = item.fallbackImg; };
+      heroImg.src = item.primaryImg;
+      document.getElementById('hero-preview-tag').textContent = item.tag + ' // ' + item.name.toUpperCase();
+      document.getElementById('hero-stock-pill').textContent = isOut ? 'SOLD OUT' : `${stock} LEFT`;
+
+      // Update Checkout Summary
+      const checkoutImg = document.getElementById('checkout-img');
+      checkoutImg.onerror = function() { this.onerror = null; this.src = item.fallbackImg; };
+      checkoutImg.src = item.primaryImg;
+      document.getElementById('checkout-title').textContent = item.name;
+      document.getElementById('checkout-desc').textContent = item.desc;
+
+      // Show/Hide Colour Picker
+      const colorWrap = document.getElementById('color-selector-wrapper');
+      colorWrap.style.display = item.isLyro ? 'block' : 'none';
+
+      // Update Stock Status & Order Button
+      const stockBadge = document.getElementById('summary-stock-badge');
+      const orderBtn = document.getElementById('whatsapp-order-btn');
+      const orderBtnLabel = document.getElementById('order-btn-label');
+
+      if (isOut) {
+        stockBadge.textContent = 'SOLD OUT';
+        stockBadge.className = 'px-2.5 py-1 rounded-full font-mono text-[10px] tracking-[0.14em] uppercase bg-red-500/20 text-red-300 border border-red-500/40';
+        orderBtn.disabled = true;
+        orderBtnLabel.textContent = 'Currently Sold Out';
+      } else {
+        stockBadge.textContent = `${stock} UNITS LEFT`;
+        stockBadge.className = 'px-2.5 py-1 rounded-full font-mono text-[10px] tracking-[0.14em] uppercase bg-cyanGlow/15 text-cyanGlow border border-cyanGlow/30';
+        orderBtn.disabled = false;
+        orderBtnLabel.textContent = 'Complete Order via WhatsApp';
+      }
+
+      renderProductCards();
+    }
+
+    function setColor(color) {
+      selectedColor = color;
+      ['White', 'Black'].forEach(c => {
+        const btn = document.getElementById('btn-color-' + c);
+        if (btn) btn.classList.toggle('active', c === color);
       });
-
-      const eyebrow = document.getElementById('hero-eyebrow');
-      const headline = document.getElementById('hero-headline');
-      const subcopy = document.getElementById('hero-subcopy');
-      const primaryCta = document.getElementById('hero-primary-cta');
-      const badgeText = document.getElementById('stage-badge-text');
-      const captionSub = document.getElementById('stage-caption-sub');
-      const ledStrip = document.getElementById('hero-led-strip');
-      const spec1Label = document.getElementById('spec-label-1');
-      const spec1Val = document.getElementById('spec-val-1');
-      const spec2Label = document.getElementById('spec-label-2');
-      const spec2Val = document.getElementById('spec-val-2');
-
-      if (edition === 'helmet') {
-        heroEditionIndex = 0;
-        document.body.setAttribute('data-theme-mode', 'lyro');
-        eyebrow.textContent = 'NOOK LYRO // SERIES 01';
-        headline.innerHTML = 'Built for<br><span class="italic font-normal text-white/95">what’s next.</span>';
-        subcopy.innerHTML = 'SMART DESK &amp; CAR DASHBOARD COMPANION.<br>SCULPTED HELMET HEADPHONE SHELL // LAHORE.';
-        primaryCta.textContent = 'Reserve LYRO';
-        badgeText.textContent = 'LYRO // HELMET HEADPHONE';
-        captionSub.textContent = 'MODEL 01 // WHITE & BLACK';
-        ledStrip.className = 'absolute bottom-0 left-1/2 -translate-x-1/2 w-28 h-[3px] rounded-full bg-cyanGlow shadow-[0_0_20px_4px_#3FE1C6] transition-all duration-500';
-        spec1Label.textContent = 'DISPLAY CORE';
-        spec1Val.textContent = 'OLED EXPRESSIVE';
-        spec2Label.textContent = 'SHELL PROFILE';
-        spec2Val.textContent = 'HELMET + HEADPHONES';
-
-        applyImageWithFallback(
-          heroStageImage,
-          modelImages['Helmet Headphone'].primary,
-          modelImages['Helmet Headphone'].fallback,
-          'LYRO Helmet Headphone'
-        );
-        switchProduct('lyro', false);
-        selectModel('Helmet Headphone');
-        selectColor('White');
-      } else if (edition === 'gtr') {
-        heroEditionIndex = 1;
-        document.body.setAttribute('data-theme-mode', 'lyro');
-        eyebrow.textContent = 'NOOK LYRO // WIDEBODY EDITION';
-        headline.innerHTML = 'Engineered<br><span class="italic font-normal text-white/95">to ride along.</span>';
-        subcopy.innerHTML = 'AERO WIDEBODY SILHOUETTE WITH GT WING.<br>DESK &amp; DASHBOARD TELEMETRY // LAHORE.';
-        primaryCta.textContent = 'Reserve GTR Edition';
-        badgeText.textContent = 'LYRO // GTR LIBERTY WALK';
-        captionSub.textContent = 'MODEL 02 // AERO WING SHELL';
-        ledStrip.className = 'absolute bottom-0 left-1/2 -translate-x-1/2 w-28 h-[3px] rounded-full bg-cyanGlow shadow-[0_0_20px_4px_#3FE1C6] transition-all duration-500';
-        spec1Label.textContent = 'AERO PACKAGE';
-        spec1Val.textContent = 'LIBERTY WALK GT WING';
-        spec2Label.textContent = 'MOUNTING';
-        spec2Val.textContent = 'DESK & CAR DASHBOARD';
-
-        applyImageWithFallback(
-          heroStageImage,
-          modelImages['GTR liberty walk'].primary,
-          modelImages['GTR liberty walk'].fallback,
-          'LYRO GTR Liberty Walk'
-        );
-        switchProduct('lyro', false);
-        selectModel('GTR liberty walk');
-        selectColor('Black');
-      } else if (edition === 'lamp') {
-        heroEditionIndex = 2;
-        document.body.setAttribute('data-theme-mode', 'classic-red');
-        eyebrow.textContent = 'NOOK AMBIENT // SERIES L1';
-        headline.innerHTML = 'Warmth for<br><span class="italic font-normal text-white/95">late nights.</span>';
-        subcopy.innerHTML = 'TALL CYLINDER AMBIENT DESK LAMP.<br>360° WARM DIFFUSION // USB-A DIRECT.';
-        primaryCta.textContent = 'Reserve Red Lamp';
-        badgeText.textContent = 'CLASSIC RED // GLOW LAMP';
-        captionSub.textContent = 'AMBIENT SERIES // 5V USB-A';
-        ledStrip.className = 'absolute bottom-0 left-1/2 -translate-x-1/2 w-28 h-[3px] rounded-full bg-ember shadow-[0_0_22px_5px_#FF6B2B] transition-all duration-500';
-        spec1Label.textContent = 'ILLUMINATION';
-        spec1Val.textContent = '360° WARM DIFFUSER';
-        spec2Label.textContent = 'POWER INPUT';
-        spec2Val.textContent = 'DIRECT USB-A CABLE';
-
-        applyImageWithFallback(
-          heroStageImage,
-          modelImages['Classic Red Lamp'].primary,
-          modelImages['Classic Red Lamp'].fallback,
-          'Classic Red Glow Lamp'
-        );
-        switchProduct('classic-red', false);
-      }
     }
 
-    function cycleHeroShowcase() {
-      heroEditionIndex = (heroEditionIndex + 1) % heroEditions.length;
-      selectHeroEdition(heroEditions[heroEditionIndex]);
-    }
+    function submitWhatsAppOrder() {
+      const item = PRODUCT_CATALOG.find(p => p.id === selectedProductId);
+      if (!item || (STOCK_CONFIG[item.id] ?? 0) <= 0) return;
 
-    // ---- Jump from 3-Card Lineup to Studio Configurator ----
-    function jumpToConfigure(product, modelName, colorName) {
-      switchProduct(product, false);
-      if (product === 'lyro' && modelName) {
-        selectModel(modelName);
+      const nameEl = document.getElementById('cust-name');
+      const phoneEl = document.getElementById('cust-phone');
+      const addrEl = document.getElementById('cust-address');
+      const errBanner = document.getElementById('validation-msg');
+
+      const name = nameEl.value.trim();
+      const phone = phoneEl.value.trim();
+      const address = addrEl.value.trim();
+
+      [nameEl, phoneEl, addrEl].forEach(el => el.classList.remove('input-error'));
+
+      if (!name || !phone || !address) {
+        if (!name) nameEl.classList.add('input-error');
+        if (!phone) phoneEl.classList.add('input-error');
+        if (!address) addrEl.classList.add('input-error');
+        errBanner.classList.remove('hidden');
+        return;
       }
-      if (product === 'lyro' && colorName) {
-        selectColor(colorName);
-      }
-      document.getElementById('studio-checkout').scrollIntoView({ behavior: 'smooth' });
-    }
+      errBanner.classList.add('hidden');
 
-    // ---- Product Tab Switching (Preserving original function signature) ----
-    function switchProduct(product, scrollToStudio) {
-      currentProduct = product;
-      document.body.setAttribute('data-theme-mode', product);
-
-      // Update Studio Tab Buttons
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        const isMatch = btn.getAttribute('data-product') === product;
-        btn.classList.toggle('active', isMatch);
-        if (isMatch) {
-          btn.className = "tab-btn active px-5 py-2.5 rounded-full font-mono text-[11px] tracking-[0.16em] uppercase transition-all cursor-pointer bg-ivory text-obsidian font-medium";
-        } else {
-          btn.className = "tab-btn px-5 py-2.5 rounded-full font-mono text-[11px] tracking-[0.16em] uppercase transition-all cursor-pointer text-white/65 hover:text-ivory";
-        }
-      });
-
-      // Update Top Header Nav Active State
-      const navLyro = document.getElementById('nav-lyro');
-      const navCr = document.getElementById('nav-classic-red');
-      if (navLyro && navCr) {
-        navLyro.classList.toggle('active', product === 'lyro');
-        navCr.classList.toggle('active', product === 'classic-red');
-      }
-
-      // Toggle Product Panels
-      const panelLyro = document.getElementById('panel-lyro');
-      const panelCr = document.getElementById('panel-classic-red');
-      if (product === 'lyro') {
-        panelLyro.classList.remove('hidden');
-        panelLyro.classList.add('grid');
-        panelCr.classList.add('hidden');
-        panelCr.classList.remove('grid');
+      let message = "";
+      if (item.isLyro) {
+        message = `Hello! I am ordering a LYRO.\n\n` +
+          `Model: ${item.modelName}\n` +
+          `Colour: ${selectedColor}\n` +
+          `Price: Rs. 4,500 PKR\n\n` +
+          `Delivery details:\n` +
+          `Name: ${name}\n` +
+          `Phone: ${phone}\n` +
+          `Address: ${address}\n\n` +
+          `Please let me know the next steps for my 200 PKR advance payment!`;
       } else {
-        panelCr.classList.remove('hidden');
-        panelCr.classList.add('grid');
-        panelLyro.classList.add('hidden');
-        panelLyro.classList.remove('grid');
+        message = `Hello! I am ordering a Classic Red Glow Lamp.\n\n` +
+          `Price: Rs. 4,500 PKR\n\n` +
+          `Delivery details:\n` +
+          `Name: ${name}\n` +
+          `Phone: ${phone}\n` +
+          `Address: ${address}\n\n` +
+          `Please let me know the next steps for my 200 PKR advance payment!`;
       }
 
-      if (scrollToStudio) {
-        document.getElementById('studio-checkout').scrollIntoView({ behavior: 'smooth' });
-      }
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`, '_blank');
     }
 
-    // ---- LYRO Variant Selection Logic (Preserves original IDs & functions) ----
-    function selectModel(model) {
-      currentModel = model;
-      document.querySelectorAll('[id^="model-"]').forEach(el => el.classList.remove('selected'));
-      const targetEl = document.getElementById('model-' + model.replace(/\s+/g, '-'));
-      if (targetEl) targetEl.classList.add('selected');
-
-      // Update Thumbnails border
-      const thumbHelmet = document.getElementById('thumb-helmet');
-      const thumbGtr = document.getElementById('thumb-gtr');
-      if (thumbHelmet && thumbGtr) {
-        if (model === 'Helmet Headphone') {
-          thumbHelmet.className = "flex items-center gap-3 p-2.5 rounded-xl border border-white/40 bg-white/[0.08] text-left transition-all cursor-pointer";
-          thumbGtr.className = "flex items-center gap-3 p-2.5 rounded-xl border border-white/10 bg-white/[0.02] hover:border-white/25 text-left transition-all cursor-pointer";
-        } else {
-          thumbGtr.className = "flex items-center gap-3 p-2.5 rounded-xl border border-white/40 bg-white/[0.08] text-left transition-all cursor-pointer";
-          thumbHelmet.className = "flex items-center gap-3 p-2.5 rounded-xl border border-white/10 bg-white/[0.02] hover:border-white/25 text-left transition-all cursor-pointer";
-        }
+    /* =====================================================================
+       4. SECRET LIVE STOCK EDITOR (Click "LAHORE // STUDIO" 5 times)
+       ===================================================================== */
+    let secretClicks = 0;
+    document.getElementById('studio-secret-trigger').addEventListener('click', () => {
+      secretClicks++;
+      if (secretClicks >= 5) {
+        secretClicks = 0;
+        openStockModal();
       }
+    });
 
-      updateLyroDisplay();
-    }
-
-    function selectColor(color) {
-      currentColor = color;
-      document.querySelectorAll('[id^="color-"]').forEach(el => el.classList.remove('selected'));
-      const targetColor = document.getElementById('color-' + color);
-      if (targetColor) targetColor.classList.add('selected');
-      updateLyroDisplay();
-    }
-
-    function updateLyroDisplay() {
-      const imgObj = modelImages[currentModel];
-      if (imgObj) {
-        applyImageWithFallback(
-          mainDisplayImage,
-          imgObj.primary,
-          imgObj.fallback,
-          "LYRO " + currentModel
-        );
-      }
-      colorTextDisplay.innerHTML = 'Selected colour: <b class="text-ivory font-medium">' + currentColor + '</b>';
-    }
-
-    // ---- WhatsApp Checkout Logic (No jarring alert(), uses inline highlight + opens WhatsApp) ----
-    function orderViaWhatsApp(product) {
-      let name, phone, address, message;
-
-      if (product === 'lyro') {
-        const nameEl = document.getElementById('cust-name-lyro');
-        const phoneEl = document.getElementById('cust-phone-lyro');
-        const addrEl = document.getElementById('cust-address-lyro');
-        const errBanner = document.getElementById('validation-msg-lyro');
-
-        name = nameEl.value.trim();
-        phone = phoneEl.value.trim();
-        address = addrEl.value.trim();
-
-        [nameEl, phoneEl, addrEl].forEach(el => el.classList.remove('input-error'));
-
-        if (!name || !phone || !address) {
-          if (!name) nameEl.classList.add('input-error');
-          if (!phone) phoneEl.classList.add('input-error');
-          if (!address) addrEl.classList.add('input-error');
-          errBanner.classList.remove('hidden');
-          return;
-        }
-        errBanner.classList.add('hidden');
-
-        message = "Hello! I am ordering a LYRO.\n\n" +
-          "Model: " + currentModel + "\n" +
-          "Colour: " + currentColor + "\n" +
-          "Price: Rs. 4,500 PKR\n\n" +
-          "Delivery details:\n" +
-          "Name: " + name + "\n" +
-          "Phone: " + phone + "\n" +
-          "Address: " + address + "\n\n" +
-          "Please let me know the next steps for my 200 PKR advance payment!";
-      } else {
-        const nameEl = document.getElementById('cust-name-cr');
-        const phoneEl = document.getElementById('cust-phone-cr');
-        const addrEl = document.getElementById('cust-address-cr');
-        const errBanner = document.getElementById('validation-msg-cr');
-
-        name = nameEl.value.trim();
-        phone = phoneEl.value.trim();
-        address = addrEl.value.trim();
-
-        [nameEl, phoneEl, addrEl].forEach(el => el.classList.remove('input-error'));
-
-        if (!name || !phone || !address) {
-          if (!name) nameEl.classList.add('input-error');
-          if (!phone) phoneEl.classList.add('input-error');
-          if (!address) addrEl.classList.add('input-error');
-          errBanner.classList.remove('hidden');
-          return;
-        }
-        errBanner.classList.add('hidden');
-
-        message = "Hello! I am ordering a Classic Red Glow Lamp.\n\n" +
-          "Price: Rs. 4,500 PKR\n\n" +
-          "Delivery details:\n" +
-          "Name: " + name + "\n" +
-          "Phone: " + phone + "\n" +
-          "Address: " + address + "\n\n" +
-          "Please let me know the next steps for my 200 PKR advance payment!";
-      }
-
-      window.open("https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message), '_blank');
-    }
-
-    // ---- Accordion Toggle ----
-    function toggleAccordion(btn) {
-      const plusIcon = btn.querySelector('.plus');
-      const panel = btn.nextElementSibling;
-      const isOpen = !!panel.style.maxHeight;
-
-      if (isOpen) {
-        panel.style.maxHeight = null;
-        if (plusIcon) plusIcon.style.transform = 'rotate(0deg)';
-      } else {
-        panel.style.maxHeight = panel.scrollHeight + "px";
-        if (plusIcon) plusIcon.style.transform = 'rotate(45deg)';
-      }
-    }
-
-    // ---- Lightbox Inspection Modal ----
-    function openLightbox() {
-      const modal = document.getElementById('lightbox-modal');
-      const lbImg = document.getElementById('lightbox-img');
-      const lbTitle = document.getElementById('lightbox-title');
-
-      if (currentProduct === 'classic-red') {
-        setLightboxImage('image_fabd91.jpg', 'lamp.jpeg', 'CLASSIC RED GLOW LAMP // USB AMBIENT');
-      } else if (currentModel === 'GTR liberty walk') {
-        setLightboxImage('image_fac03c.jpg', 'black.jpg', 'LYRO // GTR LIBERTY WALK');
-      } else {
-        setLightboxImage('image_fabd93.jpg', 'Helmet White.jpeg', 'LYRO // HELMET HEADPHONE');
-      }
-
+    function openStockModal() {
+      const container = document.getElementById('stock-admin-inputs');
+      container.innerHTML = PRODUCT_CATALOG.map(item => `
+        <div class="flex items-center justify-between bg-charcoal p-3 rounded-xl border border-white/10">
+          <span class="text-xs font-medium text-ivory">${item.name}</span>
+          <input type="number" min="0" id="admin-stock-${item.id}" value="${STOCK_CONFIG[item.id]}"
+                 class="studio-input w-20 px-2.5 py-1.5 rounded-lg text-center font-mono text-xs">
+        </div>
+      `).join('');
+      document.getElementById('copy-confirm-msg').classList.add('hidden');
+      const modal = document.getElementById('stock-admin-modal');
       modal.classList.remove('hidden');
       modal.classList.add('flex');
     }
 
-    function setLightboxImage(primary, fallback, title) {
-      const lbImg = document.getElementById('lightbox-img');
-      const lbTitle = document.getElementById('lightbox-title');
-      lbTitle.textContent = title;
-      lbImg.onerror = function() {
-        this.onerror = null;
-        this.src = fallback;
-      };
-      lbImg.src = primary;
-    }
-
-    function closeLightbox() {
-      const modal = document.getElementById('lightbox-modal');
+    function closeStockModal() {
+      const modal = document.getElementById('stock-admin-modal');
       modal.classList.add('hidden');
       modal.classList.remove('flex');
     }
 
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeLightbox();
-    });
-
-    // ---- Interactive 3D Perspective Tilt on Hero Product Stage ----
-    const heroCard = document.getElementById('hero-tilt-card');
-    if (heroCard) {
-      heroCard.addEventListener('mousemove', (e) => {
-        const rect = heroCard.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -6;
-        const rotateY = ((x - centerX) / centerX) * 6;
-        heroCard.style.transform = `rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale(1.01)`;
+    function applyAdminStock() {
+      PRODUCT_CATALOG.forEach(item => {
+        const val = parseInt(document.getElementById('admin-stock-' + item.id).value, 10);
+        STOCK_CONFIG[item.id] = isNaN(val) || val < 0 ? 0 : val;
       });
-
-      heroCard.addEventListener('mouseleave', () => {
-        heroCard.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-      });
+      selectProduct(selectedProductId);
+      closeStockModal();
     }
 
-    // ---- Scroll Reveal Observer ----
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-        }
+    function copyStockSnippet() {
+      PRODUCT_CATALOG.forEach(item => {
+        const val = parseInt(document.getElementById('admin-stock-' + item.id).value, 10);
+        STOCK_CONFIG[item.id] = isNaN(val) || val < 0 ? 0 : val;
       });
-    }, { threshold: 0.12 });
+      const snippet = `const STOCK_CONFIG = {\n  helmet: ${STOCK_CONFIG.helmet},\n  gtr: ${STOCK_CONFIG.gtr},\n  lamp: ${STOCK_CONFIG.lamp}\n};`;
+      navigator.clipboard.writeText(snippet);
+      document.getElementById('copy-confirm-msg').classList.remove('hidden');
+      selectProduct(selectedProductId);
+    }
 
-    document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+    // Initialize on load
+    selectProduct('helmet');
   </script>
 </body>
 </html>
