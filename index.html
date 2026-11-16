@@ -175,8 +175,7 @@
       <div class="flex items-baseline gap-2.5">
         <a href="#top" class="font-serif text-3xl tracking-tight text-ivory">Nook</a>
         <span class="w-2 h-2 rounded-full bg-ember inline-block" style="animation: pulseDot 2.8s infinite;"></span>
-        <!-- Secret trigger: click 5 times to open live stock editor -->
-        <span id="studio-secret-trigger" title="Studio Edition" class="hidden sm:inline-block font-mono text-[10px] tracking-[0.22em] uppercase text-white/40 ml-2 cursor-pointer select-none">
+        <span class="hidden sm:inline-block font-mono text-[10px] tracking-[0.22em] uppercase text-white/40 ml-2">
           LAHORE // STUDIO
         </span>
       </div>
@@ -250,7 +249,7 @@
               </div>
             </div>
             <div id="hero-stock-pill" class="px-3 py-1.5 rounded-full bg-obsidian/80 backdrop-blur-md border border-white/15 font-mono text-[10px] tracking-[0.14em] uppercase text-ivory">
-              -- LEFT
+              SYNCING...
             </div>
           </div>
         </div>
@@ -272,14 +271,14 @@
         </div>
         <h2 class="font-serif text-4xl text-ivory">Choose your Nook.</h2>
       </div>
-      <div class="font-mono text-[11px] tracking-[0.14em] uppercase text-white/50">
+      <div id="sync-status-label" class="font-mono text-[11px] tracking-[0.14em] uppercase text-white/50">
         ALL MODELS RS. 4,500 PKR &middot; NATIONWIDE COD
       </div>
     </div>
 
-    <!-- 3 Product Cards (Live Stock Badges Automatically Populated) -->
+    <!-- 3 Product Cards (Live Stock Badges Automatically Populated from Google Sheet) -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14" id="product-cards-grid">
-      <!-- Cards are rendered cleanly via JS from PRODUCT_CATALOG -->
+      <!-- Cards rendered via JS -->
     </div>
 
     <!-- ==========================================
@@ -292,7 +291,7 @@
         <div class="flex items-center justify-between mb-4">
           <span class="font-mono text-[10px] tracking-[0.18em] uppercase text-white/50">SELECTED CONFIGURATION</span>
           <span id="summary-stock-badge" class="px-2.5 py-1 rounded-full font-mono text-[10px] tracking-[0.14em] uppercase bg-cyanGlow/15 text-cyanGlow border border-cyanGlow/30">
-            IN STOCK
+            CHECKING STOCK...
           </span>
         </div>
 
@@ -444,7 +443,7 @@
 
       <h3 class="font-serif text-4xl text-ivory mb-2">We've got your order.</h3>
       <p class="text-xs sm:text-sm text-white/65 leading-relaxed mb-6">
-        Your details have been saved to our studio log. Complete your <span class="text-amberGlow font-medium">200 PKR advance</span> on WhatsApp to lock in your unit for dispatch.
+        Your reservation has been recorded in our system. Complete your <span class="text-amberGlow font-medium">200 PKR advance</span> on WhatsApp to lock in your unit for dispatch.
       </p>
 
       <!-- Logged Order Summary Box -->
@@ -487,52 +486,20 @@
   </div>
 
   <!-- ==========================================
-       SECRET LIVE STOCK MANAGER MODAL
-       (Click "LAHORE // STUDIO" 5 times to open)
-       ========================================== -->
-  <div id="stock-admin-modal" class="fixed inset-0 z-50 hidden bg-obsidian/90 backdrop-blur-xl items-center justify-center p-6">
-    <div class="bg-surface border border-white/20 rounded-2xl max-w-md w-full p-6 shadow-2xl">
-      <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
-        <span class="font-mono text-xs tracking-[0.18em] uppercase text-ember">LIVE STOCK MANAGER</span>
-        <button onclick="closeStockModal()" class="font-mono text-xs text-white/60 hover:text-ivory cursor-pointer">CLOSE [X]</button>
-      </div>
-      <p class="text-xs text-white/60 mb-4 leading-relaxed">
-        Adjust stock counts below to preview live availability. To make changes permanent on your live website, update the <code class="text-cyanGlow">STOCK_CONFIG</code> numbers at the top of the HTML file.
-      </p>
-      <div id="stock-admin-inputs" class="space-y-3 mb-5"></div>
-      <div class="flex gap-3">
-        <button onclick="applyAdminStock()" class="pill-btn-solid flex-1 py-2.5 text-xs font-semibold cursor-pointer">
-          Apply Preview
-        </button>
-        <button onclick="copyStockSnippet()" class="pill-btn-outline flex-1 py-2.5 text-xs font-medium cursor-pointer">
-          Copy Code Snippet
-        </button>
-      </div>
-      <div id="copy-confirm-msg" class="hidden mt-3 text-center font-mono text-[10px] uppercase tracking-widest text-cyanGlow">
-        Copied! Paste into STOCK_CONFIG in your HTML file.
-      </div>
-    </div>
-  </div>
-
-  <!-- ==========================================
-       EASY INVENTORY CONFIG & APPLICATION LOGIC
+       APPLICATION & LIVE SHEET SYNC LOGIC
        ========================================== -->
   <script>
-    /* =====================================================================
-       1. EDIT YOUR STOCK NUMBERS HERE (Set to 0 to mark an item SOLD OUT)
-       ===================================================================== */
-    const STOCK_CONFIG = {
-      helmet: 4,       // LYRO Helmet Headphone stock left
-      gtr: 2,          // LYRO GTR Liberty Walk stock left
-      lamp: 5          // Classic Red Glow Lamp stock left
-    };
-
     const WHATSAPP_NUMBER = "923351146946";
     const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbyd6H4Lr5zfW1QcFcNjkKlgr7WByXSvEvlxtayFiE4aFCOdF-sqDt31wjXLSfeoRuvQTA/exec";
 
-    /* =====================================================================
-       2. PRODUCT CATALOG DATA
-       ===================================================================== */
+    // Fallback stock values while live Google Sheet data loads
+    let STOCK_CONFIG = {
+      helmet: 4,
+      gtr: 2,
+      lamp: 5
+    };
+    let isStockLoaded = false;
+
     const PRODUCT_CATALOG = [
       {
         id: 'helmet',
@@ -573,7 +540,30 @@
     let selectedColor = 'White';
 
     /* =====================================================================
-       3. RENDER & UPDATE FUNCTIONS
+       1. FETCH LIVE STOCK FROM GOOGLE SHEET ON PAGE LOAD
+       ===================================================================== */
+    async function fetchLiveStockFromSheet() {
+      try {
+        const response = await fetch(GOOGLE_SHEET_URL + "?t=" + Date.now());
+        if (response.ok) {
+          const liveData = await response.json();
+          if (typeof liveData.helmet === 'number') STOCK_CONFIG.helmet = liveData.helmet;
+          if (typeof liveData.gtr === 'number') STOCK_CONFIG.gtr = liveData.gtr;
+          if (typeof liveData.lamp === 'number') STOCK_CONFIG.lamp = liveData.lamp;
+          isStockLoaded = true;
+          document.getElementById('sync-status-label').innerHTML =
+            '<span class="text-cyanGlow">&bull; LIVE INVENTORY SYNCED</span> &middot; NATIONWIDE COD';
+          selectProduct(selectedProductId);
+        }
+      } catch (err) {
+        console.warn("Could not fetch live stock, using fallback numbers:", err);
+        isStockLoaded = true;
+        selectProduct(selectedProductId);
+      }
+    }
+
+    /* =====================================================================
+       2. RENDER PRODUCT CARDS & SELECTION STATE
        ===================================================================== */
     function renderProductCards() {
       const grid = document.getElementById('product-cards-grid');
@@ -582,11 +572,15 @@
         const isOut = stock <= 0;
         const isActive = item.id === selectedProductId;
 
-        const badgeClass = isOut
-          ? 'bg-red-500/20 text-red-300 border-red-500/40'
-          : (stock <= 2 ? 'bg-ember/20 text-amberGlow border-ember/40' : 'bg-cyanGlow/15 text-cyanGlow border-cyanGlow/30');
+        const badgeClass = !isStockLoaded
+          ? 'bg-white/10 text-white/70 border-white/20'
+          : isOut
+            ? 'bg-red-500/20 text-red-300 border-red-500/40'
+            : (stock <= 2 ? 'bg-ember/20 text-amberGlow border-ember/40' : 'bg-cyanGlow/15 text-cyanGlow border-cyanGlow/30');
 
-        const badgeText = isOut ? 'SOLD OUT' : `${stock} LEFT IN STOCK`;
+        const badgeText = !isStockLoaded
+          ? 'CHECKING...'
+          : isOut ? 'SOLD OUT' : `${stock} LEFT IN STOCK`;
 
         return `
           <div onclick="selectProduct('${item.id}')"
@@ -595,7 +589,7 @@
               <img src="${item.primaryImg}"
                    onerror="this.onerror=null; this.src='${item.fallbackImg}';"
                    alt="${item.name}"
-                   class="w-full h-full object-cover ${isOut ? 'grayscale opacity-60' : ''}">
+                   class="w-full h-full object-cover ${isStockLoaded && isOut ? 'grayscale opacity-60' : ''}">
               <div class="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-transparent to-transparent"></div>
               <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-obsidian/80 backdrop-blur-md border border-white/15 font-mono text-[10px] tracking-[0.15em] uppercase text-ivory">
                 ${item.tag}
@@ -628,14 +622,14 @@
       if (!item) return;
 
       const stock = STOCK_CONFIG[item.id] ?? 0;
-      const isOut = stock <= 0;
+      const isOut = isStockLoaded && stock <= 0;
 
       // Update Hero Preview
       const heroImg = document.getElementById('hero-preview-img');
       heroImg.onerror = function() { this.onerror = null; this.src = item.fallbackImg; };
       heroImg.src = item.primaryImg;
       document.getElementById('hero-preview-tag').textContent = item.tag + ' // ' + item.name.toUpperCase();
-      document.getElementById('hero-stock-pill').textContent = isOut ? 'SOLD OUT' : `${stock} LEFT`;
+      document.getElementById('hero-stock-pill').textContent = !isStockLoaded ? 'SYNCING...' : (isOut ? 'SOLD OUT' : `${stock} LEFT`);
 
       // Update Checkout Summary
       const checkoutImg = document.getElementById('checkout-img');
@@ -653,7 +647,11 @@
       const orderBtn = document.getElementById('whatsapp-order-btn');
       const orderBtnLabel = document.getElementById('order-btn-label');
 
-      if (isOut) {
+      if (!isStockLoaded) {
+        stockBadge.textContent = 'CHECKING STOCK...';
+        orderBtn.disabled = false;
+        orderBtnLabel.textContent = 'Complete Order via WhatsApp';
+      } else if (isOut) {
         stockBadge.textContent = 'SOLD OUT';
         stockBadge.className = 'px-2.5 py-1 rounded-full font-mono text-[10px] tracking-[0.14em] uppercase bg-red-500/20 text-red-300 border border-red-500/40';
         orderBtn.disabled = true;
@@ -676,9 +674,12 @@
       });
     }
 
+    /* =====================================================================
+       3. SUBMIT ORDER TO GOOGLE SHEET + CONFIRMATION MODAL + WHATSAPP
+       ===================================================================== */
     function submitWhatsAppOrder() {
       const item = PRODUCT_CATALOG.find(p => p.id === selectedProductId);
-      if (!item || (STOCK_CONFIG[item.id] ?? 0) <= 0) return;
+      if (!item || (isStockLoaded && (STOCK_CONFIG[item.id] ?? 0) <= 0)) return;
 
       const nameEl = document.getElementById('cust-name');
       const phoneEl = document.getElementById('cust-phone');
@@ -700,27 +701,36 @@
       }
       errBanner.classList.add('hidden');
 
-      // 1. Send Order Data to Google Sheet in the background
-      const orderPayload = {
-        product: item.name,
-        color: item.isLyro ? selectedColor : "N/A",
-        price: item.price,
-        name: name,
-        phone: phone,
-        address: address
-      };
+      const refCode = "NK-" + Math.floor(1000 + Math.random() * 9000);
+
+      // 1. Send Order Data as URL-encoded form parameters with keepalive
+      const formParams = new URLSearchParams();
+      formParams.append("productId", item.id);
+      formParams.append("product", item.name);
+      formParams.append("color", item.isLyro ? selectedColor : "N/A");
+      formParams.append("price", item.price);
+      formParams.append("name", name);
+      formParams.append("phone", phone);
+      formParams.append("address", address);
+      formParams.append("refId", refCode);
 
       fetch(GOOGLE_SHEET_URL, {
         method: "POST",
         mode: "no-cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(orderPayload)
+        keepalive: true,
+        body: formParams
       }).catch(err => console.error("Sheet logging error:", err));
+
+      // Immediately update local UI stock count by -1
+      if (STOCK_CONFIG[item.id] > 0) {
+        STOCK_CONFIG[item.id] -= 1;
+        selectProduct(selectedProductId);
+      }
 
       // 2. Build WhatsApp URL
       let message = "";
       if (item.isLyro) {
-        message = `Hello! I am ordering a LYRO.\n\n` +
+        message = `Hello! I am ordering a LYRO (Ref: ${refCode}).\n\n` +
           `Model: ${item.modelName}\n` +
           `Colour: ${selectedColor}\n` +
           `Price: Rs. 4,500 PKR\n\n` +
@@ -730,7 +740,7 @@
           `Address: ${address}\n\n` +
           `Please let me know the next steps for my 200 PKR advance payment!`;
       } else {
-        message = `Hello! I am ordering a Classic Red Glow Lamp.\n\n` +
+        message = `Hello! I am ordering a Classic Red Glow Lamp (Ref: ${refCode}).\n\n` +
           `Price: Rs. 4,500 PKR\n\n` +
           `Delivery details:\n` +
           `Name: ${name}\n` +
@@ -742,7 +752,6 @@
       const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
       // 3. Populate & Show Confirmation Screen on Website
-      const refCode = "NK-" + Math.floor(1000 + Math.random() * 9000);
       document.getElementById('confirm-ref-id').textContent = `REF // ${refCode}`;
       document.getElementById('confirm-product').textContent = item.name;
       document.getElementById('confirm-name').textContent = name;
@@ -772,69 +781,13 @@
       confirmModal.classList.remove('flex');
     }
 
-    /* =====================================================================
-       4. SECRET LIVE STOCK EDITOR (Click "LAHORE // STUDIO" 5 times)
-       ===================================================================== */
-    let secretClicks = 0;
-    document.getElementById('studio-secret-trigger').addEventListener('click', () => {
-      secretClicks++;
-      if (secretClicks >= 5) {
-        secretClicks = 0;
-        openStockModal();
-      }
-    });
-
-    function openStockModal() {
-      const container = document.getElementById('stock-admin-inputs');
-      container.innerHTML = PRODUCT_CATALOG.map(item => `
-        <div class="flex items-center justify-between bg-charcoal p-3 rounded-xl border border-white/10">
-          <span class="text-xs font-medium text-ivory">${item.name}</span>
-          <input type="number" min="0" id="admin-stock-${item.id}" value="${STOCK_CONFIG[item.id]}"
-                 class="studio-input w-20 px-2.5 py-1.5 rounded-lg text-center font-mono text-xs">
-        </div>
-      `).join('');
-      document.getElementById('copy-confirm-msg').classList.add('hidden');
-      const modal = document.getElementById('stock-admin-modal');
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-    }
-
-    function closeStockModal() {
-      const modal = document.getElementById('stock-admin-modal');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-    }
-
-    function applyAdminStock() {
-      PRODUCT_CATALOG.forEach(item => {
-        const val = parseInt(document.getElementById('admin-stock-' + item.id).value, 10);
-        STOCK_CONFIG[item.id] = isNaN(val) || val < 0 ? 0 : val;
-      });
-      selectProduct(selectedProductId);
-      closeStockModal();
-    }
-
-    function copyStockSnippet() {
-      PRODUCT_CATALOG.forEach(item => {
-        const val = parseInt(document.getElementById('admin-stock-' + item.id).value, 10);
-        STOCK_CONFIG[item.id] = isNaN(val) || val < 0 ? 0 : val;
-      });
-      const snippet = `const STOCK_CONFIG = {\n  helmet: ${STOCK_CONFIG.helmet},\n  gtr: ${STOCK_CONFIG.gtr},\n  lamp: ${STOCK_CONFIG.lamp}\n};`;
-      navigator.clipboard.writeText(snippet);
-      document.getElementById('copy-confirm-msg').classList.remove('hidden');
-      selectProduct(selectedProductId);
-    }
-
-    // Close modals with Escape key
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeConfirmModal();
-        closeStockModal();
-      }
+      if (e.key === 'Escape') closeConfirmModal();
     });
 
-    // Initialize on load
+    // Initialize UI & Fetch Live Stock
     selectProduct('helmet');
+    fetchLiveStockFromSheet();
   </script>
 </body>
 </html>
